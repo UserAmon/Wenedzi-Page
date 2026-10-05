@@ -1,0 +1,460 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getAllPosts, type Post } from '../../lib/db';
+
+let posts: Post[] = [];
+try {
+  posts = await getAllPosts(Astro.locals);
+} catch (e) {
+  // DB query may fail if table not initialized yet
+}
+---
+
+<Layout title="Panel Administratora | 3 SDH »Wenedzi«" description="Zarządzanie postami i synchronizacją strony 3 SDH Wenedzi.">
+  <div class="bg-slate-950 text-white py-10 border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between flex-wrap gap-4">
+      <div>
+        <div class="inline-flex items-center gap-2 text-xs font-semibold text-emerald-400 mb-1">
+          <a href="/" class="hover:underline">Strona Główna</a>
+          <span>/</span>
+          <span class="text-slate-400">Administracja</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
+          🔒 Panel Administratora 3 SDH "Wenedzi"
+        </h1>
+      </div>
+      <button
+        id="logout-btn"
+        type="button"
+        class="hidden px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-colors"
+      >
+        Wyloguj się
+      </button>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+    
+    <!-- EKRAN LOGOWANIA (jeśli nie zalogowany) -->
+    <div id="login-section" class="max-w-md mx-auto bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-lg space-y-6">
+      <div class="text-center space-y-2">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-950 text-white flex items-center justify-center font-extrabold text-xl mx-auto shadow-inner">
+          3
+        </div>
+        <h2 class="text-xl font-bold text-slate-900">Dostęp dla kadry drużyny</h2>
+        <p class="text-xs text-slate-500">
+          Wpisz hasło administratora, aby zarządzać postami i synchronizacją z Facebookiem.
+        </p>
+      </div>
+
+      <form id="login-form" class="space-y-4">
+        <div>
+          <label for="admin-password" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+            Hasło dostępu:
+          </label>
+          <input
+            type="password"
+            id="admin-password"
+            placeholder="Domyślne hasło: wenedzi3"
+            required
+            class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-700"
+          />
+        </div>
+        <p id="login-error" class="hidden text-xs text-red-600 font-semibold"></p>
+        <button
+          type="submit"
+          class="w-full py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-sm transition-colors shadow-md"
+        >
+          Zaloguj się
+        </button>
+        <p class="text-[11px] text-slate-400 text-center">
+          Domyślne hasło startowe: <code class="font-mono bg-slate-100 px-1 py-0.5 rounded text-slate-700">wenedzi3</code>
+        </p>
+      </form>
+    </div>
+
+    <!-- WŁAŚCIWY DASHBOARD ADMINISTRATORA (ukryty do zalogowania) -->
+    <div id="dashboard-section" class="hidden space-y-10">
+      
+      <!-- POWIADOMIENIA / TOAST -->
+      <div id="admin-alert" class="hidden p-4 rounded-xl text-sm font-semibold transition-all"></div>
+
+      <!-- KAFELKI AKCJI: DODAWANIE POSTA + SYNCHRONIZACJA FB -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        <!-- FORMULARZ: NOWY POST NA STRONĘ -->
+        <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-5">
+          <div class="flex items-center gap-3 pb-3 border-b border-slate-100">
+            <span class="text-2xl">📝</span>
+            <div>
+              <h2 class="text-lg font-bold text-slate-900">Dodaj post ekskluzywnie na stronę</h2>
+              <p class="text-xs text-slate-500">Pojawi się na samej górze strony głównej z oznaczeniem drużyny</p>
+            </div>
+          </div>
+
+          <form id="create-post-form" class="space-y-4">
+            <div>
+              <label for="post-title" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                Tytuł posta (opcjonalny):
+              </label>
+              <input
+                type="text"
+                id="post-title"
+                placeholder="np. Zbiórka z rodzicami w najbliższą sobotę!"
+                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-700"
+              />
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label for="post-author" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                  Autor:
+                </label>
+                <input
+                  type="text"
+                  id="post-author"
+                  value="Drużynowy"
+                  class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-700"
+                />
+              </div>
+              <div class="flex items-center pt-5">
+                <label class="flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer select-none">
+                  <input type="checkbox" id="post-pinned" class="w-4 h-4 text-emerald-800 rounded border-slate-300 focus:ring-emerald-700" />
+                  <span>📌 Przypnij na górze</span>
+                </label>
+              </div>
+            </div>
+
+            <div>
+              <label for="post-content" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                Treść posta: *
+              </label>
+              <textarea
+                id="post-content"
+                rows="5"
+                required
+                placeholder="Napisz treść ogłoszenia, szczegóły wyjazdu, godziny zbiórek..."
+                class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-700"
+              ></textarea>
+            </div>
+
+            <div>
+              <label for="post-images" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                Linki do zdjęć (opcjonalnie, po jednym w linii):
+              </label>
+              <textarea
+                id="post-images"
+                rows="2"
+                placeholder="https://...&#10;https://..."
+                class="w-full px-4 py-2 rounded-xl border border-slate-300 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-emerald-700"
+              ></textarea>
+              <span class="text-[11px] text-slate-400">Możesz wkleić bezpośrednie linki do zdjęć ze schowka, chmury lub Facebooka.</span>
+            </div>
+
+            <button
+              type="submit"
+              id="submit-post-btn"
+              class="w-full py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-sm transition-colors shadow-md"
+            >
+              Opublikuj post na stronie głównej
+            </button>
+          </form>
+        </div>
+
+        <!-- SYNCHRONIZACJA Z FACEBOOKIEM -->
+        <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-5">
+          <div class="flex items-center gap-3 pb-3 border-b border-slate-100">
+            <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
+            </div>
+            <div>
+              <h2 class="text-lg font-bold text-slate-900">Synchronizacja z Facebookiem</h2>
+              <p class="text-xs text-slate-500">Pobieranie postów i zdjęć z Fanpage'a drużyny</p>
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-blue-50 border border-blue-100 text-xs text-blue-900 space-y-1">
+            <div><strong>Podpięty Fanpage:</strong> facebook.com/wenedzi</div>
+            <div><strong>Page ID:</strong> <code>241908756183484</code></div>
+          </div>
+
+          <div class="space-y-3">
+            <label for="fb-token" class="block text-xs font-bold uppercase tracking-wider text-slate-700">
+              Page Access Token (Meta Graph API):
+            </label>
+            <input
+              type="text"
+              id="fb-token"
+              placeholder="Wklej tutaj Page Access Token z Facebooka..."
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-blue-600"
+            />
+            <p class="text-[11px] text-slate-500 leading-relaxed">
+              Token jest zapamiętywany w Twojej przeglądarce i przekazywany do endpointu API. Jeśli nie masz jeszcze tokenu Facebooka, możesz dodać posty ręcznie po lewej stronie!
+            </p>
+
+            <button
+              type="button"
+              id="sync-fb-btn"
+              class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm transition-colors shadow-md flex items-center justify-center gap-2"
+            >
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
+              <span>Synchronizuj z Facebookiem teraz</span>
+            </button>
+          </div>
+
+          <div id="fb-sync-status" class="hidden p-3 rounded-xl text-xs font-medium"></div>
+        </div>
+
+      </div>
+
+      <!-- LISTA POSTÓW W BAZIE I USUWANIE -->
+      <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-xl font-bold text-slate-900">Posty w bazie danych SQLite (D1)</h2>
+            <p class="text-xs text-slate-500">Możesz usuwać wpisy lub sprawdzać stan synchronizacji</p>
+          </div>
+          <button
+            type="button"
+            id="refresh-posts-btn"
+            class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-xs font-semibold text-slate-700 transition-colors"
+          >
+            Odśwież listę
+          </button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase tracking-wider font-semibold">
+              <tr>
+                <th class="p-3">Źródło</th>
+                <th class="p-3">Tytuł / Treść</th>
+                <th class="p-3">Autor</th>
+                <th class="p-3">Data</th>
+                <th class="p-3 text-right">Akcja</th>
+              </tr>
+            </thead>
+            <tbody id="posts-table-body" class="divide-y divide-slate-100 text-slate-700">
+              {posts.map((p) => (
+                <tr data-post-id={p.id}>
+                  <td class="p-3">
+                    {p.source === 'facebook' ? (
+                      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-bold bg-blue-50 text-blue-700">
+                        Facebook
+                      </span>
+                    ) : (
+                      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-bold bg-emerald-50 text-emerald-800">
+                        Lokalny
+                      </span>
+                    )}
+                    {Boolean(p.is_pinned) && (
+                      <span class="ml-1 inline-flex items-center px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-bold">
+                        📌
+                      </span>
+                    )}
+                  </td>
+                  <td class="p-3 font-medium max-w-xs truncate">
+                    {p.title ? `[${p.title}] ` : ''}
+                    {p.content}
+                  </td>
+                  <td class="p-3 whitespace-nowrap text-slate-500">
+                    {p.author_name || '-'}
+                  </td>
+                  <td class="p-3 whitespace-nowrap text-slate-400">
+                    {p.created_at?.slice(0, 10)}
+                  </td>
+                  <td class="p-3 text-right whitespace-nowrap">
+                    <button
+                      type="button"
+                      class="delete-post-btn text-red-600 hover:text-red-800 font-bold hover:underline"
+                      data-id={p.id}
+                    >
+                      Usuń
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    const ADMIN_PASS = 'wenedzi3';
+    const authStorageKey = 'wenedzi_admin_auth';
+    const fbTokenStorageKey = 'wenedzi_fb_token';
+
+    const loginSection = document.getElementById('login-section');
+    const dashboardSection = document.getElementById('dashboard-section');
+    const loginForm = document.getElementById('login-form');
+    const loginError = document.getElementById('login-error');
+    const logoutBtn = document.getElementById('logout-btn');
+    const fbTokenInput = document.getElementById('fb-token') as HTMLInputElement;
+
+    function checkAuth() {
+      const isAuth = sessionStorage.getItem(authStorageKey) === 'true';
+      if (isAuth) {
+        loginSection?.classList.add('hidden');
+        dashboardSection?.classList.remove('hidden');
+        logoutBtn?.classList.remove('hidden');
+
+        // Załaduj zapisany token FB
+        const savedToken = localStorage.getItem(fbTokenStorageKey);
+        if (savedToken && fbTokenInput) {
+          fbTokenInput.value = savedToken;
+        }
+      } else {
+        loginSection?.classList.remove('hidden');
+        dashboardSection?.classList.add('hidden');
+        logoutBtn?.classList.add('hidden');
+      }
+    }
+
+    if (loginForm) {
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const input = (document.getElementById('admin-password') as HTMLInputElement)?.value;
+        if (input === ADMIN_PASS) {
+          sessionStorage.setItem(authStorageKey, 'true');
+          checkAuth();
+        } else {
+          if (loginError) {
+            loginError.textContent = 'Nieprawidłowe hasło.';
+            loginError.classList.remove('hidden');
+          }
+        }
+      });
+    }
+
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', () => {
+        sessionStorage.removeItem(authStorageKey);
+        checkAuth();
+      });
+    }
+
+    // Dodawanie nowego posta
+    const createPostForm = document.getElementById('create-post-form') as HTMLFormElement;
+    createPostForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = (document.getElementById('post-title') as HTMLInputElement)?.value;
+      const authorName = (document.getElementById('post-author') as HTMLInputElement)?.value;
+      const content = (document.getElementById('post-content') as HTMLTextAreaElement)?.value;
+      const isPinned = (document.getElementById('post-pinned') as HTMLInputElement)?.checked;
+      const imagesRaw = (document.getElementById('post-images') as HTMLTextAreaElement)?.value;
+
+      const images = imagesRaw
+        .split('\n')
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0 && s.startsWith('http'));
+
+      try {
+        const res = await fetch('/api/posts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title,
+            authorName,
+            content,
+            isPinned,
+            images,
+          }),
+        });
+
+        const data = await res.json() as any;
+        if (data.success) {
+          alert('Post został pomyślnie opublikowany!');
+          window.location.reload();
+        } else {
+          alert('Błąd: ' + (data.error || 'Nie udało się dodać posta.'));
+        }
+      } catch (err: any) {
+        alert('Błąd sieciowy: ' + err.message);
+      }
+    });
+
+    // Synchronizacja z Facebookiem
+    const syncFbBtn = document.getElementById('sync-fb-btn');
+    const fbSyncStatus = document.getElementById('fb-sync-status');
+
+    syncFbBtn?.addEventListener('click', async () => {
+      const token = fbTokenInput?.value.trim();
+      if (token) {
+        localStorage.setItem(fbTokenStorageKey, token);
+      }
+
+      if (fbSyncStatus) {
+        fbSyncStatus.className = 'p-3 rounded-xl text-xs font-medium bg-blue-50 text-blue-800';
+        fbSyncStatus.textContent = 'Trwa łączenie z Facebook Graph API i pobieranie postów...';
+        fbSyncStatus.classList.remove('hidden');
+      }
+
+      try {
+        const res = await fetch('/api/sync-fb', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: token || undefined }),
+        });
+
+        const data = await res.json() as any;
+        if (data.success) {
+          if (fbSyncStatus) {
+            fbSyncStatus.className = 'p-3 rounded-xl text-xs font-medium bg-emerald-50 text-emerald-800';
+            fbSyncStatus.textContent = data.message || 'Pomyślnie zsynchronizowano posty z Facebooka!';
+          }
+          setTimeout(() => window.location.reload(), 1500);
+        } else {
+          if (fbSyncStatus) {
+            fbSyncStatus.className = 'p-3 rounded-xl text-xs font-medium bg-amber-50 text-amber-900';
+            fbSyncStatus.textContent = data.message || 'Nie udało się pobrać postów.';
+          }
+        }
+      } catch (err: any) {
+        if (fbSyncStatus) {
+          fbSyncStatus.className = 'p-3 rounded-xl text-xs font-medium bg-red-50 text-red-800';
+          fbSyncStatus.textContent = 'Błąd połączenia: ' + err.message;
+        }
+      }
+    });
+
+    // Usuwanie posta
+    document.querySelectorAll('.delete-post-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-id');
+        if (!id) return;
+
+        if (confirm('Czy na pewno chcesz usunąć ten post?')) {
+          try {
+            const res = await fetch(`/api/posts/${encodeURIComponent(id)}`, {
+              method: 'DELETE',
+            });
+            const data = await res.json() as any;
+            if (data.success) {
+              const row = btn.closest('tr');
+              row?.remove();
+            } else {
+              alert('Nie udało się usunąć posta.');
+            }
+          } catch (err: any) {
+            alert('Błąd: ' + err.message);
+          }
+        }
+      });
+    });
+
+    // Odświeżanie
+    document.getElementById('refresh-posts-btn')?.addEventListener('click', () => {
+      window.location.reload();
+    });
+
+    checkAuth();
+  </script>
+</Layout>

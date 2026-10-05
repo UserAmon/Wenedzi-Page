@@ -1,0 +1,367 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = '3 SDH "Wenedzi" Szczecin',
+  description = 'Oficjalna strona 3 Szczecińskiej Drużyny Harcerzy "Wenedzi". Zbiórki, biwaki, obozy, materiały dla harcerzy i rodziców.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="pl" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen selection:bg-emerald-800 selection:text-white">
+    <!-- Górny pasek barw drużyny: Zielony (puszczaństwo) | Czarny (Zawisza Czarny) | Biały (dobroć) -->
+    <div class="w-full flex h-1.5">
+      <div class="flex-1 bg-emerald-800" title="Zielony - puszczaństwo"></div>
+      <div class="flex-1 bg-slate-950" title="Czarny - od Zawiszy Czarnego"></div>
+      <div class="flex-1 bg-white border-b border-slate-200" title="Biały - dobroć"></div>
+    </div>
+
+    <!-- Główna nawigacja -->
+    <header class="sticky top-0 z-50 bg-slate-950/95 backdrop-blur-md border-b border-slate-800 text-white shadow-lg">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+          
+          <!-- Nazwa drużyny i barwy -->
+          <a href="/" class="flex items-center gap-3.5 group">
+            <div class="w-11 h-11 rounded-lg bg-emerald-900 border border-emerald-700/60 flex items-center justify-center p-1 shadow-inner relative overflow-hidden group-hover:border-emerald-500 transition-all">
+              <div class="absolute inset-0 flex flex-col opacity-90">
+                <div class="flex-1 bg-emerald-800"></div>
+                <div class="flex-1 bg-slate-950"></div>
+                <div class="flex-1 bg-white"></div>
+              </div>
+              <span class="relative z-10 text-white font-extrabold text-sm drop-shadow-md">3</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="font-extrabold text-lg sm:text-xl tracking-wide group-hover:text-emerald-400 transition-colors">
+                3 SDH <span class="text-emerald-400">"Wenedzi"</span>
+              </span>
+              <span class="text-xs text-slate-400 font-medium tracking-wider uppercase">
+                Szczecińska Drużyna Harcerzy
+              </span>
+            </div>
+          </a>
+
+          <!-- Menu dla komputerów (Desktop) -->
+          <nav class="hidden md:flex items-center gap-1 lg:gap-2">
+            <a
+              href="/"
+              class="px-3 py-2 rounded-lg text-sm font-semibold hover:bg-slate-850 hover:text-emerald-400 transition-colors"
+            >
+              Strona Główna
+            </a>
+
+            <!-- Dropdown: Dla Rodziców -->
+            <div class="relative group">
+              <button
+                type="button"
+                class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold hover:bg-slate-800 hover:text-emerald-400 transition-colors"
+              >
+                <span>Dla Rodziców</span>
+                <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div class="absolute left-0 mt-1 w-56 rounded-xl bg-slate-900 border border-slate-800 p-2 shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
+                <a
+                  href="/dla-rodzicow/nasza-misja"
+                  class="block px-3 py-2.5 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
+                >
+                  🌲 Nasza misja
+                </a>
+                <a
+                  href="/dla-rodzicow/rachunek"
+                  class="block px-3 py-2.5 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
+                >
+                  💳 Rachunek i składki
+                </a>
+                <a
+                  href="/dla-rodzicow/zamowienia"
+                  class="block px-3 py-2.5 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
+                >
+                  👔 Zamówienia i mundury
+                </a>
+                <a
+                  href="/dla-rodzicow/kontakt"
+                  class="block px-3 py-2.5 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
+                >
+                  📞 Kontakt do nas
+                </a>
+              </div>
+            </div>
+
+            <!-- Dropdown: Dla Harcerzy -->
+            <div class="relative group">
+              <button
+                type="button"
+                class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold hover:bg-slate-800 hover:text-emerald-400 transition-colors"
+              >
+                <span>Dla Harcerzy</span>
+                <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div class="absolute left-0 mt-1 w-64 rounded-xl bg-slate-900 border border-slate-800 p-2 shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
+                <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 px-3 py-1">Teoria i Duch</div>
+                <a
+                  href="/dla-harcerzy/prawo-harcerza"
+                  class="block px-3 py-2 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
+                >
+                  ⚜️ Prawo Harcerza
+                </a>
+                <a
+                  href="/dla-harcerzy/prawo-zucha"
+                  class="block px-3 py-2 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
+                >
+                  🐺 Prawo Zucha
+                </a>
+                <a
+                  href="/dla-harcerzy/spiewnik"
+                  class="block px-3 py-2 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
+                >
+                  🎸 Śpiewnik z akordami
+                </a>
+
+                <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 px-3 pt-3 pb-1 border-t border-slate-800 mt-1">Ekwipunek</div>
+                <a
+                  href="/dla-harcerzy/ekwipunek-zbiorki"
+                  class="block px-3 py-2 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
+                >
+                  🎒 Ekwipunek na zbiórki
+                </a>
+                <a
+                  href="/dla-harcerzy/ekwipunek-biwaki"
+                  class="block px-3 py-2 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
+                >
+                  ⛺ Ekwipunek na biwaki
+                </a>
+                <a
+                  href="/dla-harcerzy/ekwipunek-obozy"
+                  class="block px-3 py-2 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
+                >
+                  🌲 Ekwipunek na obozy
+                </a>
+              </div>
+            </div>
+
+            <a
+              href="/galeria"
+              class="px-3 py-2 rounded-lg text-sm font-semibold hover:bg-slate-800 hover:text-emerald-400 transition-colors"
+            >
+              Galeria
+            </a>
+
+            <!-- Przycisk Facebook -->
+            <a
+              href="https://www.facebook.com/wenedzi/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="ml-2 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-sm"
+            >
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
+              <span>Facebook</span>
+            </a>
+
+            <!-- Dyskretny link admina -->
+            <a
+              href="/admin"
+              title="Panel administratora"
+              class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors ml-1"
+            >
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </a>
+          </nav>
+
+          <!-- Przycisk menu mobilnego -->
+          <button
+            id="mobile-menu-btn"
+            type="button"
+            class="md:hidden p-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 focus:outline-none"
+            aria-label="Otwórz menu"
+          >
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Menu mobilne rozwijane -->
+      <div id="mobile-menu" class="hidden md:hidden border-t border-slate-800 bg-slate-950 px-4 pt-3 pb-6 space-y-3">
+        <a href="/" class="block px-3 py-2 rounded-lg text-base font-semibold hover:bg-slate-900 text-white">
+          Strona Główna
+        </a>
+
+        <div class="space-y-1">
+          <div class="px-3 text-xs font-bold uppercase tracking-wider text-emerald-400">Dla Rodziców</div>
+          <a href="/dla-rodzicow/nasza-misja" class="block pl-5 pr-3 py-1.5 rounded-lg text-sm text-slate-300 hover:bg-slate-900">
+            🌲 Nasza misja
+          </a>
+          <a href="/dla-rodzicow/rachunek" class="block pl-5 pr-3 py-1.5 rounded-lg text-sm text-slate-300 hover:bg-slate-900">
+            💳 Rachunek i składki
+          </a>
+          <a href="/dla-rodzicow/zamowienia" class="block pl-5 pr-3 py-1.5 rounded-lg text-sm text-slate-300 hover:bg-slate-900">
+            👔 Zamówienia i mundury
+          </a>
+          <a href="/dla-rodzicow/kontakt" class="block pl-5 pr-3 py-1.5 rounded-lg text-sm text-slate-300 hover:bg-slate-900">
+            📞 Kontakt do nas
+          </a>
+        </div>
+
+        <div class="space-y-1 pt-2 border-t border-slate-900">
+          <div class="px-3 text-xs font-bold uppercase tracking-wider text-emerald-400">Dla Harcerzy</div>
+          <a href="/dla-harcerzy/prawo-harcerza" class="block pl-5 pr-3 py-1.5 rounded-lg text-sm text-slate-300 hover:bg-slate-900">
+            ⚜️ Prawo Harcerza
+          </a>
+          <a href="/dla-harcerzy/prawo-zucha" class="block pl-5 pr-3 py-1.5 rounded-lg text-sm text-slate-300 hover:bg-slate-900">
+            🐺 Prawo Zucha
+          </a>
+          <a href="/dla-harcerzy/spiewnik" class="block pl-5 pr-3 py-1.5 rounded-lg text-sm text-slate-300 hover:bg-slate-900">
+            🎸 Śpiewnik z akordami
+          </a>
+          <a href="/dla-harcerzy/ekwipunek-zbiorki" class="block pl-5 pr-3 py-1.5 rounded-lg text-sm text-slate-300 hover:bg-slate-900">
+            🎒 Ekwipunek na zbiórki
+          </a>
+          <a href="/dla-harcerzy/ekwipunek-biwaki" class="block pl-5 pr-3 py-1.5 rounded-lg text-sm text-slate-300 hover:bg-slate-900">
+            ⛺ Ekwipunek na biwaki
+          </a>
+          <a href="/dla-harcerzy/ekwipunek-obozy" class="block pl-5 pr-3 py-1.5 rounded-lg text-sm text-slate-300 hover:bg-slate-900">
+            🌲 Ekwipunek na obozy
+          </a>
+        </div>
+
+        <div class="pt-2 border-t border-slate-900 flex items-center justify-between">
+          <a href="/galeria" class="block px-3 py-2 rounded-lg text-base font-semibold text-white">
+            📸 Galeria
+          </a>
+          <a href="/admin" class="block px-3 py-2 rounded-lg text-sm text-slate-400 hover:text-white">
+            🔒 Panel Admina
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Główna zawartość strony -->
+    <main class="flex-grow">
+      <slot />
+    </main>
+
+    <!-- Stopka -->
+    <footer class="bg-slate-950 text-slate-400 border-t border-slate-800 mt-20">
+      <!-- Pasek barw drużyny w stopce -->
+      <div class="w-full flex h-1">
+        <div class="flex-1 bg-emerald-800"></div>
+        <div class="flex-1 bg-slate-900"></div>
+        <div class="flex-1 bg-white"></div>
+      </div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          
+          <!-- O drużynie -->
+          <div class="md:col-span-2 space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-lg bg-emerald-900 border border-emerald-700 flex items-center justify-center font-extrabold text-white text-sm">
+                3
+              </div>
+              <span class="text-white font-extrabold text-lg">
+                3 SDH "Wenedzi" Szczecin
+              </span>
+            </div>
+            <p class="text-sm text-slate-400 max-w-md leading-relaxed">
+              3 Szczecińska Drużyna Harcerzy "Wenedzi". Wychowujemy młodzież w duchu braterstwa, samodzielności i miłości do ojczyzny i przyrody.
+            </p>
+            <div class="flex items-center gap-2 pt-1 text-xs">
+              <span class="text-slate-400 font-semibold">Barwy drużyny:</span>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-slate-300">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                <span>Zielony (puszczaństwo)</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-slate-300">
+                <span class="w-2.5 h-2.5 rounded-full bg-slate-950 inline-block border border-slate-700"></span>
+                <span>Czarny (Zawisza Czarny)</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-slate-300">
+                <span class="w-2.5 h-2.5 rounded-full bg-white inline-block"></span>
+                <span>Biały (dobroć)</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Szybkie linki rodzice -->
+          <div>
+            <h4 class="text-white font-bold text-sm tracking-wide uppercase mb-3">Dla Rodziców</h4>
+            <ul class="space-y-2 text-sm">
+              <li><a href="/dla-rodzicow/nasza-misja" class="hover:text-emerald-400 transition-colors">Nasza misja</a></li>
+              <li><a href="/dla-rodzicow/rachunek" class="hover:text-emerald-400 transition-colors">Rachunek i składki</a></li>
+              <li><a href="/dla-rodzicow/zamowienia" class="hover:text-emerald-400 transition-colors">Zamówienia i mundury</a></li>
+              <li><a href="/dla-rodzicow/kontakt" class="hover:text-emerald-400 transition-colors">Kontakt do drużynowego</a></li>
+            </ul>
+          </div>
+
+          <!-- Szybkie linki harcerze -->
+          <div>
+            <h4 class="text-white font-bold text-sm tracking-wide uppercase mb-3">Dla Harcerzy</h4>
+            <ul class="space-y-2 text-sm">
+              <li><a href="/dla-harcerzy/prawo-harcerza" class="hover:text-emerald-400 transition-colors">Prawo Harcerza</a></li>
+              <li><a href="/dla-harcerzy/prawo-zucha" class="hover:text-emerald-400 transition-colors">Prawo Zucha</a></li>
+              <li><a href="/dla-harcerzy/spiewnik" class="hover:text-emerald-400 transition-colors">Śpiewnik harcerski</a></li>
+              <li><a href="/dla-harcerzy/ekwipunek-zbiorki" class="hover:text-emerald-400 transition-colors">Ekwipunek na zbiórki</a></li>
+              <li><a href="/dla-harcerzy/ekwipunek-biwaki" class="hover:text-emerald-400 transition-colors">Ekwipunek na biwaki</a></li>
+              <li><a href="/dla-harcerzy/ekwipunek-obozy" class="hover:text-emerald-400 transition-colors">Ekwipunek na obozy</a></li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div class="mt-12 pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
+          <p>© {new Date().getFullYear()} 3 SDH "Wenedzi" Szczecin. Wszelkie prawa zastrzeżone.</p>
+          <div class="flex items-center gap-4">
+            <a href="https://www.facebook.com/wenedzi/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">
+              facebook.com/wenedzi
+            </a>
+            <span>•</span>
+            <span class="text-emerald-500 font-semibold">Czuwaj!</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Prosty skrypt do menu mobilnego -->
+    <script>
+      const btn = document.getElementById('mobile-menu-btn');
+      const menu = document.getElementById('mobile-menu');
+      if (btn && menu) {
+        btn.addEventListener('click', () => {
+          menu.classList.toggle('hidden');
+        });
+      }
+    </script>
+  </body>
+</html>

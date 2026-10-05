@@ -1,0 +1,10 @@
+name = "wenedzi-page"
+compatibility_date = "2024-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Cloudflare D1 SQLite Database
+[[d1_databases]]
+binding = "DB"
+database_name = "wenedzi-db"
+database_id = "cd00f46a-222d-4a6b-b038-f7deeec35ee2"
+migrations_dir = "migrations"

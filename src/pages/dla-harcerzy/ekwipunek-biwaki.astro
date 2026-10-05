@@ -1,0 +1,166 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const biwakItems = [
+  { id: 'biw-1', kat: 'Spanie', nazwa: 'Plecak turystyczny z pasem biodrowym (40-60 l)', opis: 'Pakowany tak, aby nic nie dyndało na zewnątrz. Wszystko mieści się w środku!' },
+  { id: 'biw-2', kat: 'Spanie', nazwa: 'Śpiwór dostosowany do pory roku', opis: 'Spakowany w worek kompresyjny oraz dodatkowo w foliową reklamówkę (ochrona przed deszczem).' },
+  { id: 'biw-3', kat: 'Spanie', nazwa: 'Karimata lub mata samopompująca', opis: 'Solidna pianka izolująca od zimnego podłoża, zabezpieczona trokami.' },
+  { id: 'biw-4', kat: 'Kuchnia', nazwa: 'Menażka harcerska (dwuczęściowa)', opis: 'Aluminiowa lub stalowa, podpisana inicjałami.' },
+  { id: 'biw-5', kat: 'Kuchnia', nazwa: 'Niezbędnik harcerski (lub spork)', opis: 'Łyżka, widelec, nóż do posiłków przy ognisku.' },
+  { id: 'biw-6', kat: 'Kuchnia', nazwa: 'Kubek metalowy / termiczny i bidon na wodę (1 litr)', opis: 'Odporny na stłuczenie, przydatny przy herbatce z kociołka.' },
+  { id: 'biw-7', kat: 'Mundur & Odzież', nazwa: 'Pełny mundur galowy', opis: 'Koszula, chusta 3 SDH, pas, rogatywka, getry, wywijki.' },
+  { id: 'biw-8', kat: 'Mundur & Odzież', nazwa: 'Buty za kostkę (trekingowe, rozchodzone)', opis: 'Wygodne, zaimpregnowane obuwie terenowe.' },
+  { id: 'biw-9', kat: 'Mundur & Odzież', nazwa: 'Kurtka przeciwdeszczowa / peleryna (poncho)', opis: 'Ochrona przed ulewą na trasie marszobiegu.' },
+  { id: 'biw-10', kat: 'Mundur & Odzież', nazwa: 'Ciepły polar / bluza drużyny', opis: 'Wieczory przy ognisku i noce w namiocie bywają chłodne.' },
+  { id: 'biw-11', kat: 'Mundur & Odzież', nazwa: 'Ubrania na zmianę w workach foliowych', opis: '2-3 pary skarpet, bielizna, koszulki bawełniane, wygodne spodnie dresowe do spania.' },
+  { id: 'biw-12', kat: 'Sprzęt', nazwa: 'Latarka czołówka + zapasowy komplet baterii', opis: 'Wolne ręce w nocy to podstawa bezpieczeństwa.' },
+  { id: 'biw-13', kat: 'Sprzęt', nazwa: 'Finka harcerska (nóż w pochwie)', opis: 'Do strugania kijów, pionierki i prac obozowych.' },
+  { id: 'biw-14', kat: 'Higiena', nazwa: 'Kosmetyczka & ręcznik szybkoschnący', opis: 'Szczoteczka, pasta, mydło, papier toaletowy (w woreczku!).' },
+  { id: 'biw-15', kat: 'Dokumenty', nazwa: 'Legitymacja szkolna i zgoda rodziców', opis: 'Ważna legitymacja z aktualną pieczątką.' },
+];
+---
+
+<Layout title="Ekwipunek na Biwaki | 3 SDH »Wenedzi«" description="Spis rzeczy i interaktywna checklista wyposażenia na biwak weekendowy 3 SDH Wenedzi.">
+  <div class="bg-slate-950 text-white py-12 border-b border-slate-800">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+      <div class="inline-flex items-center gap-2 text-xs font-semibold text-emerald-400 mb-2">
+        <a href="/" class="hover:underline">Strona Główna</a>
+        <span>/</span>
+        <a href="/dla-harcerzy/prawo-harcerza" class="hover:underline text-slate-400">Dla Harcerzy</a>
+        <span>/</span>
+        <span class="text-slate-400">Ekwipunek</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+        ⛺ Ekwipunek na Biwaki Weekendowe
+      </h1>
+      <p class="mt-2 text-slate-400 text-sm sm:text-base">
+        Kompletna lista rzeczy do spakowania na 2-3 dniowy wyjazd pod namioty lub do leśniczówki.
+      </p>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+    
+    <!-- PASEK POSTĘPU -->
+    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-3">
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-bold text-slate-900">Stan spakowania na biwak:</span>
+        <span id="progress-text" class="text-sm font-extrabold text-emerald-800">0 / {biwakItems.length}</span>
+      </div>
+      <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+        <div id="progress-bar" class="h-full bg-emerald-700 transition-all duration-300 w-0"></div>
+      </div>
+      <div class="flex items-center justify-between pt-1">
+        <p class="text-xs text-slate-500">
+          Zaznaczaj spakowane rzeczy – stan zapisuje się automatycznie w Twojej przeglądarce.
+        </p>
+        <button
+          id="reset-btn"
+          type="button"
+          class="text-xs font-semibold text-red-600 hover:text-red-800 hover:underline"
+        >
+          Wyczyść listę
+        </button>
+      </div>
+    </div>
+
+    <!-- LISTA ELEMENTÓW -->
+    <div class="space-y-3">
+      {biwakItems.map((item) => (
+        <label class="group flex items-start gap-4 p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 hover:border-emerald-700/50 shadow-sm cursor-pointer transition-all select-none">
+          <input
+            type="checkbox"
+            data-id={item.id}
+            class="item-checkbox mt-1 w-5 h-5 text-emerald-800 rounded border-slate-300 focus:ring-emerald-700 cursor-pointer"
+          />
+          <div class="flex-1 space-y-0.5">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
+                {item.kat}
+              </span>
+              <span class="item-title font-bold text-slate-900 text-base group-hover:text-emerald-900 transition-colors">
+                {item.nazwa}
+              </span>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed pt-0.5">
+              {item.opis}
+            </p>
+          </div>
+        </label>
+      ))}
+    </div>
+
+    <!-- PORADA PUSZCZAŃSKA -->
+    <div class="p-6 rounded-2xl bg-slate-900 text-white space-y-2 border border-slate-800">
+      <h3 class="font-bold text-sm text-emerald-400 uppercase tracking-wide">
+        Złota zasada pakowania plecaka:
+      </h3>
+      <p class="text-sm text-slate-300 leading-relaxed">
+        Wszystkie ubrania i śpiwór pakuj do <strong>osobnych worków foliowych</strong> wewnątrz plecaka! Nawet najlepszy plecak może przemoknąć podczas wielogodzinnej ulewy w lesie. Suchy śpiwór i sucha para skarpet po całym dniu to skarb harcerza.
+      </p>
+    </div>
+
+  </div>
+
+  <script>
+    const storageKey = 'wenedzi_ekwipunek_biwaki';
+    const checkboxes = document.querySelectorAll<HTMLInputElement>('.item-checkbox');
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    const resetBtn = document.getElementById('reset-btn');
+
+    function loadSavedState() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
+        checkboxes.forEach((cb) => {
+          const id = cb.dataset.id;
+          if (id && saved[id]) {
+            cb.checked = true;
+          }
+        });
+      } catch {}
+      updateProgress();
+    }
+
+    function saveState() {
+      const state: Record<string, boolean> = {};
+      checkboxes.forEach((cb) => {
+        const id = cb.dataset.id;
+        if (id) {
+          state[id] = cb.checked;
+        }
+      });
+      localStorage.setItem(storageKey, JSON.stringify(state));
+      updateProgress();
+    }
+
+    function updateProgress() {
+      let checkedCount = 0;
+      checkboxes.forEach((cb) => {
+        const cardTitle = cb.closest('label')?.querySelector('.item-title');
+        if (cb.checked) {
+          checkedCount++;
+          cardTitle?.classList.add('line-through', 'text-slate-400');
+        } else {
+          cardTitle?.classList.remove('line-through', 'text-slate-400');
+        }
+      });
+
+      const total = checkboxes.length;
+      const pct = total > 0 ? (checkedCount / total) * 100 : 0;
+      if (progressBar) progressBar.style.width = `${pct}%`;
+      if (progressText) progressText.innerText = `${checkedCount} / ${total}`;
+    }
+
+    checkboxes.forEach((cb) => cb.addEventListener('change', saveState));
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        checkboxes.forEach((cb) => (cb.checked = false));
+        saveState();
+      });
+    }
+
+    loadSavedState();
+  </script>
+</Layout>

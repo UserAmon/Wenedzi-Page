@@ -1,0 +1,78 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const prawaZucha = [
+  { nr: 1, tekst: 'Zuch kocha Boga i Polskę.', opis: 'Szanuje tradycje, kocha swoją Ojczyznę i modli się o dobro dla swoich bliskich.' },
+  { nr: 2, tekst: 'Zuch jest dzielny.', opis: 'Nie boi się ciemności ani trudności, próbuje nowych rzeczy i nie poddaje się ze strachu.' },
+  { nr: 3, tekst: 'Zuch mówi prawdę.', opis: 'Zawsze jest szczery, nie zmyśla, nie oszukuje kolegów ani rodziców.' },
+  { nr: 4, tekst: 'Zuch pamięta o swoich obowiązkach.', opis: 'Sam sprząta swój pokój, pakuje tornister do szkoły i pilnuje zuchowych zadań.' },
+  { nr: 5, tekst: 'Wszystkim jest z zuchem dobrze.', opis: 'Jest uśmiechnięty, dzieli się zabawkami, nie kłóci się i pomaga w gromadzie.' },
+  { nr: 6, tekst: 'Zuch stara się być coraz lepszy.', opis: 'Każdego dnia uczy się czegoś nowego i pokonuje swoje małe słabości.' },
+];
+---
+
+<Layout title="Prawo Zucha | 3 SDH »Wenedzi«" description="Prawo i Obietnica Zucha. Podstawy wychowania zuchowego i reguły dla najmłodszych.">
+  <div class="bg-slate-950 text-white py-12 border-b border-slate-800">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+      <div class="inline-flex items-center gap-2 text-xs font-semibold text-emerald-400 mb-2">
+        <a href="/" class="hover:underline">Strona Główna</a>
+        <span>/</span>
+        <span class="text-slate-400">Dla Harcerzy</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+        Prawo i Obietnica Zucha
+      </h1>
+      <p class="mt-2 text-slate-400 text-sm sm:text-base">
+        Dla najmłodszych w ruchu harcerskim – fundamenty zuchowej przygody.
+      </p>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-12 space-y-10">
+    
+    <!-- OBIETNICA ZUCHA -->
+    <div class="bg-gradient-to-br from-amber-950 via-slate-900 to-slate-950 text-white rounded-2xl p-6 sm:p-10 border-2 border-amber-600/60 shadow-xl space-y-4 text-center">
+      <span class="text-xs font-bold uppercase tracking-widest text-amber-400 block">
+        🐺 Obietnica Zuchowa
+      </span>
+      <blockquote class="text-xl sm:text-2xl font-serif italic text-amber-100 max-w-xl mx-auto leading-relaxed">
+        „Obiecuję być dobrym zuchem, zawsze przestrzegać Prawa Zucha.”
+      </blockquote>
+      <p class="text-xs text-slate-400 pt-1">
+        Pozdrowienie zuchowe to krótkie i radosne: <strong>„CZUJ!”</strong>
+      </p>
+    </div>
+
+    <!-- 6 PUNKTÓW PRAWA ZUCHA -->
+    <section class="space-y-6">
+      <h2 class="text-2xl font-bold text-slate-900">Sześć Punktów Prawa Zucha</h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {prawaZucha.map((pz) => (
+          <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-2">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-900 font-extrabold flex items-center justify-center text-sm">
+                {pz.nr}
+              </span>
+              <h3 class="font-bold text-slate-900 text-base">
+                {pz.tekst}
+              </h3>
+            </div>
+            <p class="text-xs text-slate-600 pl-11 leading-relaxed">
+              {pz.opis}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Kim jest zuch -->
+    <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-3">
+      <h3 class="text-lg font-bold text-slate-900">Od zucha do harcerza</h3>
+      <p class="text-sm text-slate-600 leading-relaxed">
+        Zuchy to najmłodsi członkowie harcerskiej rodziny (zazwyczaj uczniowie klas 1–3 szkoły podstawowej). Ich metodyka opiera się na zabawie w kogoś (rycerza, indianina, odkrywcę kosmosu), która przygotowuje ich do wstąpienia do drużyny harcerskiej w wieku 10-11 lat.
+      </p>
+    </div>
+
+  </div>
+</Layout>

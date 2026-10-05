@@ -1,0 +1,160 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const items = [
+  { id: 'zb-1', kategoria: 'Podstawa', nazwa: 'Pełne umundurowanie', opis: 'Koszula mundurowa, czarna chusta Wenedów, rogatywka ze srebrną lilijką, pas harcerski, getry i wywijki.' },
+  { id: 'zb-2', kategoria: 'Podstawa', nazwa: 'Legitymacja szkolna / harcerska', opis: 'Ważna legitymacja uprawniająca do ulgi przejazdowej.' },
+  { id: 'zb-3', kategoria: 'Podstawa', nazwa: 'Bilet lub karta miejska (Szczecin)', opis: 'Do przejazdów komunikacją miejską na teren zbiórki i gier terenowych.' },
+  { id: 'zb-4', kategoria: 'Pionierka & Notatki', nazwa: 'Notatnik harcerski i długopis / ołówek', opis: 'Do zapisywania zadań, rozkazów i instrukcji na biegach terenowych.' },
+  { id: 'zb-5', kategoria: 'Pionierka & Notatki', nazwa: 'Linka do węzłów (sznurek pionierski)', opis: 'Odcinek ok. 1,5 - 2 metry sznurka sizalowego lub bawełnianego do nauki węzłów.' },
+  { id: 'zb-6', kategoria: 'Teren', nazwa: 'Zapałki zabezpieczone przed wilgocią', opis: 'W szczelnym woreczku lub pojemniczku po kliszy/lekach.' },
+  { id: 'zb-7', kategoria: 'Teren', nazwa: 'Igła z nitką (zielona i czarna)', opis: 'Niezbędnik każdego harcerza do szybkich napraw munduru w terenie.' },
+  { id: 'zb-8', kategoria: 'Teren', nazwa: 'Bidon / butelka wody i mała przekąska', opis: 'Minimum 0,5 l wody i pożywna kanapka lub owoc na zbiórkę plenerową.' },
+  { id: 'zb-9', kategoria: 'Pogoda', nazwa: 'Kurtka przeciwdeszczowa lub peleryna', opis: 'Pamiętamy: nie ma złej pogody, jest tylko złe ubranie!' },
+];
+---
+
+<Layout title="Ekwipunek na Zbiórki | 3 SDH »Wenedzi«" description="Interaktywna checklista wyposażenia harcerza na cotygodniową zbiórkę 3 SDH Wenedzi.">
+  <div class="bg-slate-950 text-white py-12 border-b border-slate-800">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+      <div class="inline-flex items-center gap-2 text-xs font-semibold text-emerald-400 mb-2">
+        <a href="/" class="hover:underline">Strona Główna</a>
+        <span>/</span>
+        <a href="/dla-harcerzy/prawo-harcerza" class="hover:underline text-slate-400">Dla Harcerzy</a>
+        <span>/</span>
+        <span class="text-slate-400">Ekwipunek</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+        🎒 Ekwipunek na Zbiórki
+      </h1>
+      <p class="mt-2 text-slate-400 text-sm sm:text-base">
+        Co każdy harcerz 3 SDH "Wenedzi" musi mieć w swoim małym plecaku na każdą zbiórkę.
+      </p>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+    
+    <!-- PASEK POSTĘPU -->
+    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-3">
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-bold text-slate-900">Stan spakowania plecaka:</span>
+        <span id="progress-text" class="text-sm font-extrabold text-emerald-800">0 / {items.length}</span>
+      </div>
+      <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+        <div id="progress-bar" class="h-full bg-emerald-700 transition-all duration-300 w-0"></div>
+      </div>
+      <div class="flex items-center justify-between pt-1">
+        <p class="text-xs text-slate-500">
+          Zaznaczaj rzeczy pakując plecak w domu – lista pamięta Twój postęp!
+        </p>
+        <button
+          id="reset-btn"
+          type="button"
+          class="text-xs font-semibold text-red-600 hover:text-red-800 hover:underline"
+        >
+          Wyczyść zaznaczenia
+        </button>
+      </div>
+    </div>
+
+    <!-- LISTA RZECZY -->
+    <div class="space-y-3">
+      {items.map((item) => (
+        <label class="group flex items-start gap-4 p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 hover:border-emerald-700/50 shadow-sm cursor-pointer transition-all select-none">
+          <input
+            type="checkbox"
+            data-id={item.id}
+            class="item-checkbox mt-1 w-5 h-5 text-emerald-800 rounded border-slate-300 focus:ring-emerald-700 cursor-pointer"
+          />
+          <div class="flex-1 space-y-0.5">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
+                {item.kategoria}
+              </span>
+              <span class="item-title font-bold text-slate-900 text-base group-hover:text-emerald-900 transition-colors">
+                {item.nazwa}
+              </span>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed pt-0.5">
+              {item.opis}
+            </p>
+          </div>
+        </label>
+      ))}
+    </div>
+
+    <!-- ZASADA HARCERSKA -->
+    <div class="p-6 rounded-2xl bg-slate-900 text-white space-y-2 border border-slate-800">
+      <h3 class="font-bold text-sm text-emerald-400 uppercase tracking-wide">
+        Złota zasada zbiórkowa:
+      </h3>
+      <p class="text-sm text-slate-300 leading-relaxed">
+        Plecaki pakujemy <strong>samodzielnie</strong> w piątek wieczorem, a nie w sobotę 15 minut przed wyjściem! Punktualność na zbiórce to szacunek do braci z zastępu.
+      </p>
+    </div>
+
+  </div>
+
+  <script>
+    const storageKey = 'wenedzi_ekwipunek_zbiorki';
+    const checkboxes = document.querySelectorAll<HTMLInputElement>('.item-checkbox');
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    const resetBtn = document.getElementById('reset-btn');
+
+    function loadSavedState() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
+        checkboxes.forEach((cb) => {
+          const id = cb.dataset.id;
+          if (id && saved[id]) {
+            cb.checked = true;
+          }
+        });
+      } catch {}
+      updateProgress();
+    }
+
+    function saveState() {
+      const state: Record<string, boolean> = {};
+      checkboxes.forEach((cb) => {
+        const id = cb.dataset.id;
+        if (id) {
+          state[id] = cb.checked;
+        }
+      });
+      localStorage.setItem(storageKey, JSON.stringify(state));
+      updateProgress();
+    }
+
+    function updateProgress() {
+      let checkedCount = 0;
+      checkboxes.forEach((cb) => {
+        const cardTitle = cb.closest('label')?.querySelector('.item-title');
+        if (cb.checked) {
+          checkedCount++;
+          cardTitle?.classList.add('line-through', 'text-slate-400');
+        } else {
+          cardTitle?.classList.remove('line-through', 'text-slate-400');
+        }
+      });
+
+      const total = checkboxes.length;
+      const pct = total > 0 ? (checkedCount / total) * 100 : 0;
+      if (progressBar) progressBar.style.width = `${pct}%`;
+      if (progressText) progressText.innerText = `${checkedCount} / ${total}`;
+    }
+
+    checkboxes.forEach((cb) => cb.addEventListener('change', saveState));
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        checkboxes.forEach((cb) => (cb.checked = false));
+        saveState();
+      });
+    }
+
+    loadSavedState();
+  </script>
+</Layout>

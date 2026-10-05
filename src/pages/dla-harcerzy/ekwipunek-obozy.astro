@@ -1,0 +1,199 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const obozItems = [
+  // Dokumenty
+  { id: 'ob-1', kat: 'Dokumenty', nazwa: 'Karta kwalifikacyjna uczestnika wypoczynku', opis: 'Wypełniona i podpisana przez rodziców oraz lekarza (lub z oświadczeniem o stanie zdrowia).' },
+  { id: 'ob-2', kat: 'Dokumenty', nazwa: 'Ważna legitymacja szkolna', opis: 'Niezbędna do zniżki na przejazd pociągiem/autokarem.' },
+  { id: 'ob-3', kat: 'Dokumenty', nazwa: 'Książeczka szczepień / zaświadczenie o tężcu', opis: 'Bardzo ważne w warunkach leśnych i pionierki obozowej.' },
+  
+  // Mundur
+  { id: 'ob-4', kat: 'Mundur', nazwa: 'Mundur galowy (komplet)', opis: 'Czysta wyprasowana koszula ZHR, czarna chusta Wenedów, rogatywka ze srebrną lilijką, pas harcerski, getry czarne i wywijki.' },
+  
+  // Spanie
+  { id: 'ob-5', kat: 'Spanie', nazwa: 'Ciepły śpiwór (komfort min. 0-5°C)', opis: 'Noce w leśnym namiocie bywają zimne nawet w lipcu i sierpniu!' },
+  { id: 'ob-6', kat: 'Spanie', nazwa: 'Karimata lub mata samopompująca', opis: 'Izolacja na łóżko polowe (kanadyjkę).' },
+  { id: 'ob-7', kat: 'Spanie', nazwa: 'Ciepły dres i grube skarpety do spania', opis: 'Dedykowane wyłącznie do snu – nigdy nie śpimy w ubraniach z dnia!' },
+  { id: 'ob-8', kat: 'Spanie', nazwa: 'Prześcieradło z gumką na kanadyjkę', opis: 'Ułatwia utrzymanie czystości na pryczy.' },
+
+  // Odzież codzienna
+  { id: 'ob-9', kat: 'Odzież', nazwa: 'Czarne / ciemne spodnie bojówki (2-3 pary)', opis: 'Wytrzymałe spodnie do pracy pionierskiej i zwiadu.' },
+  { id: 'ob-10', kat: 'Odzież', nazwa: 'Krótkie spodenki (2-3 pary)', opis: 'Do zajęć sportowych i upalnych dni.' },
+  { id: 'ob-11', kat: 'Odzież', nazwa: 'Koszulki t-shirt (minimum 10-12 sztuk)', opis: 'W tym koszulki drużyny/zastępu.' },
+  { id: 'ob-12', kat: 'Odzież', nazwa: 'Ciepłe polary / bluzy (2-3 sztuki)', opis: 'Na chłodniejsze wieczory przy ogniskach i wachty nocne.' },
+  { id: 'ob-13', kat: 'Odzież', nazwa: 'Bielizna osobista i skarpety (14-16 kompletów)', opis: 'W tym kilka par grubych skarpet trekingowych.' },
+  { id: 'ob-14', kat: 'Odzież', nazwa: 'Solidna kurtka przeciwdeszczowa i peleryna', opis: 'Nieprzemakalna, z kapturem.' },
+  { id: 'ob-15', kat: 'Odzież', nazwa: 'Kąpielówki i strój kąpielowy', opis: 'Do kąpieli w jeziorze pod okiem ratownika WOPR.' },
+
+  // Obuwie
+  { id: 'ob-16', kat: 'Obuwie', nazwa: 'Buty trekingowe rozchodzone (za kostkę)', opis: 'Główne buty obozowe – nie kupuj nowych dzień przed obozem!' },
+  { id: 'ob-17', kat: 'Obuwie', nazwa: 'Buty sportowe lżejsze (adidasy/trampki)', opis: 'Na zmianę po powrocie do podobozu.' },
+  { id: 'ob-18', kat: 'Obuwie', nazwa: 'Klapki pod prysznic polowy', opis: 'Niezbędne do higieny w obozowych prysznicach.' },
+
+  // Kuchnia
+  { id: 'ob-19', kat: 'Kuchnia', nazwa: 'Menażka dwuczęściowa i kubek metalowy', opis: 'Podpisane trwałym markerem lub wygrawerowane inicjały.' },
+  { id: 'ob-20', kat: 'Kuchnia', nazwa: 'Niezbędnik (sztućce) i ściereczka kuchenna', opis: 'Do własnoręcznego mycia i wycierania menażki po posiłku.' },
+  { id: 'ob-21', kat: 'Kuchnia', nazwa: 'Bidon na wodę / manierka (min. 1 litr)', opis: 'Do stałego nawadniania w upale.' },
+
+  // Higiena
+  { id: 'ob-22', kat: 'Higiena', nazwa: 'Kosmetyczka wisząca z przyborami', opis: 'Mydło w mydelniczce, szampon, szczoteczka i pasta do zębów.' },
+  { id: 'ob-23', kat: 'Higiena', nazwa: '2 ręczniki szybkoschnące (duży i mały)', opis: 'Szybko schną na sznurkach podobozowych.' },
+  { id: 'ob-24', kat: 'Higiena', nazwa: 'Worek materiałowy na brudną bieliznę', opis: 'Oddziela brudne rzeczy od czystych w kufrze/plecaku.' },
+  { id: 'ob-25', kat: 'Higiena', nazwa: 'Mydło/proszek do prania ręcznego', opis: 'W połowie obozu każdy uczy się sam prać swoje skarpetki i koszulki!' },
+
+  // Sprzęt pionierski i bezpieczeństwo
+  { id: 'ob-26', kat: 'Sprzęt', nazwa: 'Finka harcerska (nóż w pochwie z zabezpieczeniem)', opis: 'Narzędzie do budowy pryczy, półek i zdobnictwa obozowego.' },
+  { id: 'ob-27', kat: 'Sprzęt', nazwa: 'Czołówka + duży zapas baterii (2 komplety)', opis: 'Podstawa nocnych wart obozowych i gier nocnych.' },
+  { id: 'ob-28', kat: 'Sprzęt', nazwa: 'Preparat przeciw kleszczom i komarom (np. Mugga)', opis: 'Stosowany codziennie rano i wieczorem.' },
+  { id: 'ob-29', kat: 'Sprzęt', nazwa: 'Krem z filtrem UV oraz nakrycie głowy (kapelusz/czapka)', opis: 'Ochrona przed udarem słonecznym.' },
+  { id: 'ob-30', kat: 'Sprzęt', nazwa: 'Śpiewnik, notatnik, przybory do pisania', opis: 'Do kroniki obozowej, prób na stopnie i ognisk.' },
+];
+---
+
+<Layout title="Ekwipunek na Obozy | 3 SDH »Wenedzi«" description="Pełna wyprawka na obóz harcerski 3 SDH Wenedzi. Wszystko co niezbędne na 2-3 tygodnie pod namiotem w lesie.">
+  <div class="bg-slate-950 text-white py-12 border-b border-slate-800">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+      <div class="inline-flex items-center gap-2 text-xs font-semibold text-emerald-400 mb-2">
+        <a href="/" class="hover:underline">Strona Główna</a>
+        <span>/</span>
+        <a href="/dla-harcerzy/prawo-harcerza" class="hover:underline text-slate-400">Dla Harcerzy</a>
+        <span>/</span>
+        <span class="text-slate-400">Ekwipunek</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+        🌲 Wyprawka na Obóz Harcerski
+      </h1>
+      <p class="mt-2 text-slate-400 text-sm sm:text-base">
+        Pełna lista ekwipunku na letni obóz leśny pod namiotami (2-3 tygodnie puszczańskiego życia).
+      </p>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+    
+    <!-- PASEK POSTĘPU -->
+    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-3">
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-bold text-slate-900">Stan spakowania na obóz letni:</span>
+        <span id="progress-text" class="text-sm font-extrabold text-emerald-800">0 / {obozItems.length}</span>
+      </div>
+      <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+        <div id="progress-bar" class="h-full bg-emerald-700 transition-all duration-300 w-0"></div>
+      </div>
+      <div class="flex items-center justify-between pt-1">
+        <p class="text-xs text-slate-500">
+          Odznaczaj spakowane rzeczy do plecaka lub skrzyni obozowej.
+        </p>
+        <button
+          id="reset-btn"
+          type="button"
+          class="text-xs font-semibold text-red-600 hover:text-red-800 hover:underline"
+        >
+          Resetuj zaznaczenia
+        </button>
+      </div>
+    </div>
+
+    <!-- LISTA RZECZY -->
+    <div class="space-y-3">
+      {obozItems.map((item) => (
+        <label class="group flex items-start gap-4 p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 hover:border-emerald-700/50 shadow-sm cursor-pointer transition-all select-none">
+          <input
+            type="checkbox"
+            data-id={item.id}
+            class="item-checkbox mt-1 w-5 h-5 text-emerald-800 rounded border-slate-300 focus:ring-emerald-700 cursor-pointer"
+          />
+          <div class="flex-1 space-y-0.5">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
+                {item.kat}
+              </span>
+              <span class="item-title font-bold text-slate-900 text-base group-hover:text-emerald-900 transition-colors">
+                {item.nazwa}
+              </span>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed pt-0.5">
+              {item.opis}
+            </p>
+          </div>
+        </label>
+      ))}
+    </div>
+
+    <!-- CZEGO NIE ZABIERAMY NA OBÓZ -->
+    <div class="p-6 rounded-2xl bg-red-50 border border-red-200 text-red-950 space-y-2">
+      <h3 class="font-bold text-base flex items-center gap-2">
+        <span>🚫</span>
+        <span>Czego kategorycznie NIE zabieramy na obóz?</span>
+      </h3>
+      <ul class="text-xs sm:text-sm text-red-900 space-y-1.5 list-disc list-inside">
+        <li>Konsol do gier, tabletów i zbędnej elektroniki (telefony są deponowane u drużynowego na czas obozu).</li>
+        <li>Cennej biżuterii, drogich zegarków i dużych kwot gotówki.</li>
+        <li>Dużych zapasów słodyczy i chipsów (przyciągają mrówki, osy i dzikie zwierzęta do namiotu!).</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <script>
+    const storageKey = 'wenedzi_ekwipunek_obozy';
+    const checkboxes = document.querySelectorAll<HTMLInputElement>('.item-checkbox');
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    const resetBtn = document.getElementById('reset-btn');
+
+    function loadSavedState() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
+        checkboxes.forEach((cb) => {
+          const id = cb.dataset.id;
+          if (id && saved[id]) {
+            cb.checked = true;
+          }
+        });
+      } catch {}
+      updateProgress();
+    }
+
+    function saveState() {
+      const state: Record<string, boolean> = {};
+      checkboxes.forEach((cb) => {
+        const id = cb.dataset.id;
+        if (id) {
+          state[id] = cb.checked;
+        }
+      });
+      localStorage.setItem(storageKey, JSON.stringify(state));
+      updateProgress();
+    }
+
+    function updateProgress() {
+      let checkedCount = 0;
+      checkboxes.forEach((cb) => {
+        const cardTitle = cb.closest('label')?.querySelector('.item-title');
+        if (cb.checked) {
+          checkedCount++;
+          cardTitle?.classList.add('line-through', 'text-slate-400');
+        } else {
+          cardTitle?.classList.remove('line-through', 'text-slate-400');
+        }
+      });
+
+      const total = checkboxes.length;
+      const pct = total > 0 ? (checkedCount / total) * 100 : 0;
+      if (progressBar) progressBar.style.width = `${pct}%`;
+      if (progressText) progressText.innerText = `${checkedCount} / ${total}`;
+    }
+
+    checkboxes.forEach((cb) => cb.addEventListener('change', saveState));
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        checkboxes.forEach((cb) => (cb.checked = false));
+        saveState();
+      });
+    }
+
+    loadSavedState();
+  </script>
+</Layout>

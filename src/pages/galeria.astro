@@ -1,0 +1,234 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getAllPosts } from '../lib/db';
+
+let dynamicImages: { src: string; caption: string; tag: string }[] = [];
+
+try {
+  const posts = await getAllPosts(Astro.locals);
+  posts.forEach((p) => {
+    if (p.images_json) {
+      try {
+        const imgs = JSON.parse(p.images_json);
+        if (Array.isArray(imgs)) {
+          imgs.forEach((imgUrl) => {
+            dynamicImages.push({
+              src: imgUrl,
+              caption: p.title || (p.content.length > 60 ? p.content.slice(0, 60) + '...' : p.content),
+              tag: p.source === 'facebook' ? 'Z Facebooka' : 'Wyprawy',
+            });
+          });
+        }
+      } catch {}
+    }
+  });
+} catch {}
+
+// Dodatkowe klimatyczne zdjęcia harcerskie, aby galeria zawsze była bogata
+const staticPhotos = [
+  {
+    src: 'https://images.unsplash.com/photo-1517824806704-9040b037703b?auto=format&fit=crop&w=1200&q=80',
+    caption: 'Wspólne ognisko na zakończenie letniego obozu w lesie',
+    tag: 'Obozy Letnie',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?auto=format&fit=crop&w=1200&q=80',
+    caption: 'Poranny apel i wschód słońca nad obozowiskiem',
+    tag: 'Obozy Letnie',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1510312305653-8ed496efae75?auto=format&fit=crop&w=1200&q=80',
+    caption: 'Pionierka leśna – budowa bramy obozowej i pomostu',
+    tag: 'Pionierka',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80',
+    caption: 'Zwiad terenowy i bieg patrolowy w Puszczy Bukowej',
+    tag: 'Biwaki i Rajdy',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80',
+    caption: 'Zdobywanie szczytów podczas rajdu górskiego',
+    tag: 'Biwaki i Rajdy',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80',
+    caption: 'Nocna wachta pod rozgwieżdżonym niebem',
+    tag: 'Obozy Letnie',
+  },
+];
+
+const allPhotos = [...dynamicImages, ...staticPhotos];
+---
+
+<Layout title="Galeria Zdjęć | 3 SDH »Wenedzi«" description="Fotorelacje z obozów, biwaków i zbiórek 3 Szczecińskiej Drużyny Harcerzy Wenedzi.">
+  <div class="bg-slate-950 text-white py-12 border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="inline-flex items-center gap-2 text-xs font-semibold text-emerald-400 mb-2">
+        <a href="/" class="hover:underline">Strona Główna</a>
+        <span>/</span>
+        <span class="text-slate-400">Zdjęcia</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+        📸 Galeria Wypraw i Zbiórek
+      </h1>
+      <p class="mt-2 text-slate-400 text-sm sm:text-base">
+        Kadry z leśnego życia 3 SDH "Wenedzi" – ogniska, obozy, pionierka i wędrówki.
+      </p>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 space-y-8">
+    
+    <!-- FILTRY -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+      <button
+        type="button"
+        class="filter-btn active px-4 py-2 rounded-xl text-xs font-bold bg-emerald-800 text-white transition-colors"
+        data-tag="all"
+      >
+        Wszystkie ({allPhotos.length})
+      </button>
+      <button
+        type="button"
+        class="filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 transition-colors"
+        data-tag="Obozy Letnie"
+      >
+        Obozy Letnie
+      </button>
+      <button
+        type="button"
+        class="filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 transition-colors"
+        data-tag="Biwaki i Rajdy"
+      >
+        Biwaki i Rajdy
+      </button>
+      <button
+        type="button"
+        class="filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 transition-colors"
+        data-tag="Pionierka"
+      >
+        Pionierka
+      </button>
+      <button
+        type="button"
+        class="filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 transition-colors"
+        data-tag="Z Facebooka"
+      >
+        Z Facebooka
+      </button>
+    </div>
+
+    <!-- SIATKA ZDJĘĆ -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5" id="gallery-grid">
+      {allPhotos.map((photo, idx) => (
+        <div
+          class="gallery-item group relative aspect-[4/3] rounded-2xl overflow-hidden bg-slate-900 border border-slate-200 cursor-pointer shadow-sm hover:shadow-lg transition-all"
+          data-tag={photo.tag}
+          data-src={photo.src}
+          data-caption={photo.caption}
+          data-idx={idx}
+        >
+          <img
+            src={photo.src}
+            alt={photo.caption}
+            loading="lazy"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-4 flex flex-col justify-end text-white">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded-full w-max mb-1">
+              {photo.tag}
+            </span>
+            <p class="text-xs sm:text-sm font-semibold leading-snug line-clamp-2">
+              {photo.caption}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+  </div>
+
+  <!-- LIGHTBOX (MODAL POWIĘKSZANIA ZDJĘĆ) -->
+  <div
+    id="lightbox"
+    class="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-md hidden flex flex-col items-center justify-center p-4"
+  >
+    <button
+      id="lightbox-close"
+      type="button"
+      class="absolute top-5 right-5 p-3 rounded-full bg-slate-800 text-white hover:bg-slate-700 transition-colors"
+      aria-label="Zamknij"
+    >
+      <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <div class="max-w-5xl max-h-[85vh] flex flex-col items-center space-y-3">
+      <img
+        id="lightbox-img"
+        src=""
+        alt=""
+        class="max-w-full max-h-[75vh] object-contain rounded-xl shadow-2xl"
+      />
+      <p id="lightbox-caption" class="text-sm text-slate-300 text-center font-medium max-w-xl"></p>
+    </div>
+  </div>
+
+  <script>
+    // Filtrowanie tagów
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const items = document.querySelectorAll('.gallery-item');
+
+    filterBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach((b) => {
+          b.classList.remove('bg-emerald-800', 'text-white');
+          b.classList.add('bg-white', 'text-slate-700');
+        });
+        btn.classList.add('bg-emerald-800', 'text-white');
+        btn.classList.remove('bg-white', 'text-slate-700');
+
+        const tag = btn.getAttribute('data-tag');
+        items.forEach((item) => {
+          const itemTag = item.getAttribute('data-tag');
+          if (tag === 'all' || itemTag === tag) {
+            (item as HTMLElement).classList.remove('hidden');
+          } else {
+            (item as HTMLElement).classList.add('hidden');
+          }
+        });
+      });
+    });
+
+    // Lightbox
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+    const lightboxCaption = document.getElementById('lightbox-caption');
+    const lightboxClose = document.getElementById('lightbox-close');
+
+    items.forEach((item) => {
+      item.addEventListener('click', () => {
+        const src = item.getAttribute('data-src');
+        const caption = item.getAttribute('data-caption');
+        if (src && lightboxImg && lightboxCaption && lightbox) {
+          lightboxImg.src = src;
+          lightboxCaption.textContent = caption || '';
+          lightbox.classList.remove('hidden');
+        }
+      });
+    });
+
+    if (lightboxClose && lightbox) {
+      lightboxClose.addEventListener('click', () => {
+        lightbox.classList.add('hidden');
+      });
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
+          lightbox.classList.add('hidden');
+        }
+      });
+    }
+  </script>
+</Layout>

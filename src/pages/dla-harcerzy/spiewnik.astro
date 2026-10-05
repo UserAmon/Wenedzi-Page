@@ -1,0 +1,266 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const piosenki = [
+  {
+    id: 'plonie-ognisko',
+    tytul: 'Płonie ognisko i szumią knieje',
+    kategoria: 'Ogniskowe',
+    tekst: `Płonie ognisko i szumią knieje, [C a]
+Drużynowy jest wśród nas. [d G]
+Opowiada starodawne dzieje, [C a]
+Bohaterski wskrzesza czas. [d G C]
+
+Refren:
+O rycerstwie spod kresowych stanic, [C a d G]
+O obrońcach naszych polskich granic. [C a d G]
+A ponad nami wiatr piosnkę niesie, [C a d G]
+A ponad nami wiatr piosnkę niesie. [d G C]
+
+Już przebrzmiały dawne opowieści, [C a]
+Ogień z wolna w popiół lśni. [d G]
+Każdy w sercu swym na zawsze zmieści, [C a]
+Ogniskowych wspomnień dni. [d G C]`,
+  },
+  {
+    id: 'szara-piechota',
+    tytul: 'Szara piechota (Maszerują strzelcy)',
+    kategoria: 'Historyczne / Marszowe',
+    tekst: `Nie noszą lampasów, lecz szary ich strój, [d A7 d]
+Nie noszą srebrzystych gwiazd, [d g A7]
+Lecz w pierwszym szeregu podążają w bój, [d A7 d]
+Piechota, ta szara piechota! [g A7 d]
+
+Refren:
+Maszerują strzelcy, maszerują, [F C]
+Karabiny błyszczą, szary strój. [F A7]
+A przed nimi drzewa salutują, [d A7 d]
+Bo za naszą Polskę idą w bój! [g A7 d]
+
+Mówili, że zmarznie, że w piachu legnie krew, [d A7 d]
+Że darmo piechoty trud. [d g A7]
+A oni wciąż naprzód, a oni wciąż wprzód, [d A7 d]
+Piechota, ta szara piechota! [g A7 d]`,
+  },
+  {
+    id: 'krajka',
+    tytul: 'Krajka',
+    kategoria: 'Wędrowne',
+    tekst: `Chustę w kratę włożę dziś na głowę, [C e]
+W plecak wrzucę parę starych nut. [F G]
+I wyruszę w dróżki malinowe, [C e]
+Szukać słońca w cieniu leśnych wrót. [F G C]
+
+Refren:
+Wszystko jedno gdzie powędrujemy, [F G C a]
+Byle z wiatrem, byle przed się w dal. [F G C C7]
+Z plecakami ziemię przemierzymy, [F G C a]
+Choćby w deszczu, choćby pośród skał. [F G C]
+
+Gdy wieczorem siądziemy przy watrze, [C e]
+A iskierki polecą do gwiazd, [F G]
+Wtedy na twój profil w ogniu spojrzę, [C e]
+Pomyślę: jak dobrze wśród was. [F G C]`,
+  },
+  {
+    id: 'bieszczadzki-trakt',
+    tytul: 'Bieszczadzki trakt',
+    kategoria: 'Turystyczne',
+    tekst: `Kiedy nadejdzie czas, ruszamy w las, [C G]
+Bieszczadzki trakt nas wzywa znów. [a F G]
+Połonin czar zachwyci nas, [C G]
+Nie trzeba nam zbędnych słów. [a F G C]
+
+Refren:
+Zielony szlak, bieszczadzki wiatr, [C G a F]
+Przygoda czeka tuż za rogiem dróg. [C G C]
+Z plecakiem marsz, gitara gra, [C G a F]
+Ognisko lśni u naszych stóp. [C G C]
+
+Przez Ustrzyki, Wetlinę i Cisną, [C G]
+Będziemy szli aż po zmierzch. [a F G]
+Gdy gwiazdy na niebie zabłysną, [C G]
+Wspomnimy ten cały dzień. [a F G C]`,
+  },
+  {
+    id: 'jak-dobrze-nam',
+    tytul: 'Jak dobrze nam zdobywać góry',
+    kategoria: 'Wędrowne',
+    tekst: `Jak dobrze nam zdobywać góry [C G]
+I młodą piersią chłonąć wiatr! [G7 C]
+Prężnymi stopy deptać chmury [C F]
+I piękny, wielki widzieć świat! [C G C]
+
+Refren:
+O cześć wam, góry, lasy, rzeki, [C F]
+O cześć wam, łąki, białe mgły! [C G]
+Nasz hufiec dzielny i daleki, [C F]
+Wesołą piosnkę w sercu tli! [C G C]`,
+  },
+  {
+    id: 'idzie-noc',
+    tytul: 'Idzie noc (Pieśń na zakończenie)',
+    kategoria: 'Ogniskowe',
+    tekst: `Idzie noc, słońce już [C G]
+Zeszło z gór, zeszło z mórz, [F C]
+Zeszło z pól. [G C]
+Czysty spływ, czyste lśnienie, [C F]
+Bóg jest tuż. [G C]
+
+(Piosenka śpiewana w kręgu na zakończenie ogniska lub capstrzyku)`,
+  },
+];
+---
+
+<Layout title="Śpiewnik Harcerski | 3 SDH »Wenedzi«" description="Harcerski śpiewnik z tekstami i chwytami gitarowymi. Piosenki na ogniska i biwaki 3 SDH Wenedzi.">
+  <div class="bg-slate-950 text-white py-12 border-b border-slate-800">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+      <div class="inline-flex items-center gap-2 text-xs font-semibold text-emerald-400 mb-2">
+        <a href="/" class="hover:underline">Strona Główna</a>
+        <span>/</span>
+        <span class="text-slate-400">Dla Harcerzy</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+        Śpiewnik Harcerski
+      </h1>
+      <p class="mt-2 text-slate-400 text-sm sm:text-base">
+        Tradycyjne pieśni i piosenki ogniskowe z chwytami gitarowymi (akordami) i wyszukiwarką.
+      </p>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-6">
+    
+    <!-- PASEK STEROWANIA: WYSZUKIWARKA I PRZEŁĄCZNIK AKORDÓW -->
+    <div class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+      
+      <!-- Pole wyszukiwania -->
+      <div class="relative w-full sm:w-80">
+        <input
+          type="text"
+          id="song-search"
+          placeholder="Szukaj po tytule lub tekście..."
+          class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-700 text-sm"
+        />
+        <svg class="w-5 h-5 text-slate-400 absolute left-3 top-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </div>
+
+      <!-- Przełącznik akordów -->
+      <label class="flex items-center gap-2 text-sm font-semibold text-slate-700 cursor-pointer select-none">
+        <input type="checkbox" id="toggle-chords" checked class="w-4 h-4 text-emerald-700 rounded border-slate-300 focus:ring-emerald-600" />
+        <span>Pokazuj chwyty gitarowe</span>
+      </label>
+
+    </div>
+
+    <!-- LISTA PIOSENEK -->
+    <div id="songs-list" class="space-y-6">
+      {piosenki.map((p) => (
+        <article class="song-card bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm hover:border-slate-300 transition-all space-y-4" data-title={p.tytul.toLowerCase()} data-lyrics={p.tekst.toLowerCase()}>
+          
+          <div class="flex items-center justify-between flex-wrap gap-2 pb-3 border-b border-slate-100">
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full">
+                {p.kategoria}
+              </span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 mt-1">
+                {p.tytul}
+              </h2>
+            </div>
+            <button
+              type="button"
+              class="copy-song-btn text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
+              data-text={p.tekst}
+            >
+              Kopiuj tekst
+            </button>
+          </div>
+
+          <!-- Treść piosenki z akordami -->
+          <pre class="song-lyrics font-sans text-sm sm:text-base leading-relaxed text-slate-800 whitespace-pre-wrap font-medium">{p.tekst}</pre>
+
+        </article>
+      ))}
+    </div>
+
+    <div id="no-songs" class="hidden bg-white rounded-2xl p-8 border border-slate-200 text-center text-slate-500">
+      Nie znaleziono piosenek pasujących do wyszukiwania.
+    </div>
+
+  </div>
+
+  <script>
+    // Filtrowanie piosenek w czasie rzeczywistym
+    const searchInput = document.getElementById('song-search') as HTMLInputElement;
+    const cards = document.querySelectorAll('.song-card');
+    const noSongs = document.getElementById('no-songs');
+
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase().trim();
+        let visibleCount = 0;
+
+        cards.forEach((card) => {
+          const el = card as HTMLElement;
+          const title = el.dataset.title || '';
+          const lyrics = el.dataset.lyrics || '';
+
+          if (title.includes(query) || lyrics.includes(query)) {
+            el.classList.remove('hidden');
+            visibleCount++;
+          } else {
+            el.classList.add('hidden');
+          }
+        });
+
+        if (noSongs) {
+          if (visibleCount === 0) {
+            noSongs.classList.remove('hidden');
+          } else {
+            noSongs.classList.add('hidden');
+          }
+        }
+      });
+    }
+
+    // Przełączanie widoczności chwytów gitarowych
+    const toggleChords = document.getElementById('toggle-chords') as HTMLInputElement;
+    const lyricsElements = document.querySelectorAll('.song-lyrics');
+
+    const originalLyricsMap = new Map<Element, string>();
+    lyricsElements.forEach((el) => {
+      originalLyricsMap.set(el, el.textContent || '');
+    });
+
+    if (toggleChords) {
+      toggleChords.addEventListener('change', () => {
+        const show = toggleChords.checked;
+        lyricsElements.forEach((el) => {
+          const orig = originalLyricsMap.get(el) || '';
+          if (show) {
+            el.textContent = orig;
+          } else {
+            // Ukryj wszystko w nawiasach kwadratowych [C a d G]
+            el.textContent = orig.replace(/\[[^\]]+\]/g, '');
+          }
+        });
+      });
+    }
+
+    // Kopiowanie tekstu
+    document.querySelectorAll('.copy-song-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const text = btn.getAttribute('data-text') || '';
+        navigator.clipboard.writeText(text).then(() => {
+          const prev = btn.textContent;
+          btn.textContent = 'Skopiowano!';
+          setTimeout(() => {
+            btn.textContent = prev;
+          }, 2000);
+        });
+      });
+    });
+  </script>
+</Layout>
