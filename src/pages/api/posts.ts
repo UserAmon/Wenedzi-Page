@@ -19,7 +19,7 @@ export const GET: APIRoute = async ({ locals }) => {
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
     const body = await request.json();
-    const { title, content, images, authorName, isPinned } = body;
+    const { title, content, images, authorName, isPinned, source, fbPermalink } = body;
 
     if (!content || typeof content !== 'string') {
       return new Response(JSON.stringify({ success: false, error: 'Treść posta jest wymagana.' }), {
@@ -29,10 +29,12 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
 
     await createLocalPost(locals, {
+      source: source === 'facebook' ? 'facebook' : 'local',
       title: title || '',
       content,
       images: Array.isArray(images) ? images : [],
-      authorName: authorName || 'Drużynowy',
+      authorName: authorName || (source === 'facebook' ? '3 SDH Wenedzi (Facebook)' : 'Drużynowy'),
+      fbPermalink: fbPermalink || undefined,
       isPinned: Boolean(isPinned),
     });
 
