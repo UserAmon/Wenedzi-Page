@@ -1,4 +1,6 @@
-// Interfejsy bazy danych dla 3 SDH Wenedzi
+// Interfejsy i operacje bazy danych dla 3 SDH Wenedzi
+
+import { fetchLiveFacebookPosts } from './facebook';
 
 export interface Post {
   id: string;
@@ -19,9 +21,9 @@ const CF_ACCOUNT_ID = typeof process !== 'undefined' ? process.env?.CLOUDFLARE_A
 const CF_DATABASE_ID = typeof process !== 'undefined' ? process.env?.CLOUDFLARE_DATABASE_ID : undefined;
 const CF_API_TOKEN = typeof process !== 'undefined' ? process.env?.CLOUDFLARE_API_TOKEN : undefined;
 
-// Domyślne 5 postów (realne wpisy z profilu FB drużyny i komunikaty lokalne)
-export const DEFAULT_POSTS: Post[] = [
-  {
+// Jedyny zhardkodowany post powitalny w bazie – z datą na dziś
+export function getWelcomePost(): Post {
+  return {
     id: 'local-welcome',
     source: 'local',
     title: 'Czuwaj! Witamy na oficjalnej stronie 3 SDH »Wenedzi«',
@@ -34,79 +36,10 @@ export const DEFAULT_POSTS: Post[] = [
     fb_permalink: null,
     author_name: 'Drużynowy',
     is_pinned: 1,
-    created_at: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), // 1 dzień temu
+    created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
-  },
-  {
-    id: 'fb-hopr-kurs',
-    source: 'facebook',
-    title: null,
-    content:
-      '🚒 W miniony weekend nasi starsi wędrownicy – druh Adam i druh Michał – wraz z przybocznym, druhem Dominikiem, wzięli udział w zaawansowanym kursie pierwszej pomocy – HOPR Okręg Północno-Zachodni.\n\nPrzez trzy dni intensywnych ćwiczeń nasi druhowie mierzyli się z realistycznymi pozoracjami wypadków, ćwiczyli resuscytację krążeniowo-oddechową, zaopatrywanie urazów w trudnych warunkach leśnych oraz koordynację działań ratowniczych.\n\nWiedza i umiejętności zdobyte na kursie będą procentować na każdej zbiórce, biwaku i obozie naszej drużyny. Gratulacje dla uczestników za determinację i zdany egzamin ratowniczy! Czuwaj!',
-    images_json: JSON.stringify([
-      'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&w=1200&q=80',
-    ]),
-    fb_post_id: '1419090903670761',
-    fb_permalink:
-      'https://www.facebook.com/wenedzi/posts/-w-miniony-weekend-nasi-starsi-w%C4%99drownicy-druh-adam-i-druh-micha%C5%82-wraz-z-przyboc/1419090903670761/',
-    author_name: '3 SDH Wenedzi (Facebook)',
-    is_pinned: 0,
-    created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString(), // 3 dni temu
-    updated_at: new Date().toISOString(),
-  },
-  {
-    id: 'fb-puszcza-bukowa',
-    source: 'facebook',
-    title: null,
-    content:
-      '🌲 Jesienny marsz patrolowy i zbiórka w Puszczy Bukowej!\n\nW minioną sobotę Zastępy „Wilki”, „Jastrzębie” i „Bory” ruszyły na trasę gry terenowej w sercu Puszczy Bukowej. Zadaniem harcerzy było bezbłędne przejście trasy z mapą i kompasem, odnalezienie punktów kontrolnych oraz rozwiązanie szyfrów przygotowanych przez kadrę.\n\nNa mecie czekała na wszystkich zasłużona leśna herbata gotowana w kociołku na ognisku i wspólna pionierka obozowa. Dziękujemy wszystkim za zaangażowanie i harcerskiego ducha!',
-    images_json: JSON.stringify([
-      'https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1510312305653-8ed496efae75?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1200&q=80',
-    ]),
-    fb_post_id: '1418501234567890',
-    fb_permalink: 'https://www.facebook.com/wenedzi/',
-    author_name: '3 SDH Wenedzi (Facebook)',
-    is_pinned: 0,
-    created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 6).toISOString(), // 6 dni temu
-    updated_at: new Date().toISOString(),
-  },
-  {
-    id: 'fb-przyrzeczenie',
-    source: 'facebook',
-    title: null,
-    content:
-      '⚜️ Bieg na stopień i Przyrzeczenie Harcerskie na Polanie Sosnowej.\n\nKolejni druhowie po wielomiesięcznej próbie udowodnili, że zasługują na miano pełnoprawnych harcerzy. W blasku harcerskiego ogniska, w obecności całej drużyny i instruktorów, złożyli uroczyste Przyrzeczenie Harcerskie na krzyż harcerski:\n\n„Mam szczerą wolę całym życiem pełnić służbę Bogu i Polsce, nieść chętną pomoc bliźnim i być posłusznym Prawu Harcerskiemu”.\n\nWielkie brawa dla młodych druhów – witamy w braterskim kręgu!',
-    images_json: JSON.stringify([
-      'https://images.unsplash.com/photo-1508873696983-2df5293cb395?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80',
-    ]),
-    fb_post_id: '1417809876543210',
-    fb_permalink: 'https://www.facebook.com/wenedzi/',
-    author_name: '3 SDH Wenedzi (Facebook)',
-    is_pinned: 0,
-    created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 10).toISOString(), // 10 dni temu
-    updated_at: new Date().toISOString(),
-  },
-  {
-    id: 'local-biwak-info',
-    source: 'local',
-    title: 'Informacja dla Rodziców: Ekwipunek na biwak jesienny',
-    content:
-      'Drodzy Rodzice i Harcerze!\nZbliża się nasz doroczny biwak drużyny. W zakładkach »Dla Rodziców« oraz »Dla Harcerzy -> Ekwipunek na biwaki« opublikowaliśmy szczegółową listę rzeczy, które każdy harcerz musi mieć spakowane do plecaka.\n\nPrzypominamy o ciepłym śpiworze, karimacie, latarce czołówce, menażce oraz aktualnej legitymacji szkolnej. W razie pytań zapraszamy do kontaktu z drużynowym!',
-    images_json: JSON.stringify([
-      'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=1200&q=80',
-    ]),
-    fb_post_id: null,
-    fb_permalink: null,
-    author_name: 'Drużynowy',
-    is_pinned: 0,
-    created_at: new Date(Date.now() - 1000 * 60 * 60 * 24 * 14).toISOString(), // 14 dni temu
-    updated_at: new Date().toISOString(),
-  },
-];
+  };
+}
 
 async function getD1Binding(): Promise<any> {
   // Astro v6+ / Cloudflare Workers: import { env } from "cloudflare:workers"
@@ -167,24 +100,75 @@ export async function executeD1Query<T = any>(
   return [];
 }
 
-// Pobieranie postów (sortowane: najpierw przypięte, potem najnowsze wg daty)
+/**
+ * Zwraca 1 post powitalny oraz 4 ostatnie z Facebooka posortowane chronologicznie.
+ * Przy wejściu na stronę automatycznie zaciąga najnowsze dane ze strony na FB.
+ */
 export async function getAllPosts(locals: any): Promise<Post[]> {
+  // 1. Przy wejściu na stronę zaciągamy dane na żywo z profilu na Facebooku
   try {
-    const sql = `
-      SELECT * FROM posts 
-      ORDER BY is_pinned DESC, created_at DESC 
-      LIMIT 50
-    `;
-    const dbPosts = await executeD1Query<Post>(locals, sql);
-    if (dbPosts && dbPosts.length > 0) {
-      return dbPosts;
+    const liveFbPosts = await fetchLiveFacebookPosts();
+    if (liveFbPosts && liveFbPosts.length > 0) {
+      for (const fbPost of liveFbPosts) {
+        const images = fbPost.images_json ? JSON.parse(fbPost.images_json) : [];
+        await upsertFacebookPost(locals, {
+          fbPostId: fbPost.fb_post_id || fbPost.id,
+          message: fbPost.content,
+          images: images,
+          permalink: fbPost.fb_permalink || 'https://www.facebook.com/wenedzi/',
+          createdAt: fbPost.created_at,
+        });
+      }
     }
   } catch (err) {
-    console.error('Błąd pobierania postów z D1:', err);
+    console.warn('Nie udało się odświeżyć postów z FB w locie:', err);
   }
 
-  // Fallback: 5 domyślnych postów jeśli baza jest pusta lub niedostępna
-  return DEFAULT_POSTS;
+  // 2. Pobieramy 1 post lokalny (Czuwaj! Witamy...) oraz 4 najnowsze z Facebooka z bazy D1
+  try {
+    const welcome = getWelcomePost();
+    await executeD1Query(
+      locals,
+      `INSERT INTO posts (id, source, title, content, images_json, author_name, is_pinned, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
+       ON CONFLICT(id) DO UPDATE SET
+         title = excluded.title,
+         content = excluded.content,
+         images_json = excluded.images_json,
+         created_at = datetime('now'),
+         updated_at = datetime('now')`,
+      [
+        welcome.id,
+        welcome.source,
+        welcome.title,
+        welcome.content,
+        welcome.images_json,
+        welcome.author_name,
+        welcome.is_pinned,
+      ]
+    );
+
+    const localPosts = await executeD1Query<Post>(
+      locals,
+      `SELECT * FROM posts WHERE source = 'local' ORDER BY created_at DESC LIMIT 1`
+    );
+
+    const fbPosts = await executeD1Query<Post>(
+      locals,
+      `SELECT * FROM posts WHERE source = 'facebook' ORDER BY created_at DESC LIMIT 4`
+    );
+
+    const combined: Post[] = [...(localPosts.length > 0 ? localPosts : [welcome]), ...fbPosts];
+
+    // Sortowanie chronologiczne: najnowsze na górze
+    combined.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+
+    return combined.slice(0, 5);
+  } catch (err) {
+    console.error('Błąd pobierania postów z bazy D1:', err);
+  }
+
+  return [getWelcomePost()];
 }
 
 // Dodawanie posta lokalnego lub facebookowego
@@ -254,6 +238,7 @@ export async function upsertFacebookPost(
       content = excluded.content,
       images_json = excluded.images_json,
       fb_permalink = excluded.fb_permalink,
+      created_at = excluded.created_at,
       updated_at = datetime('now')
   `;
 

@@ -1,20 +1,9 @@
 import type { APIRoute } from 'astro';
 import { syncFacebookPosts } from '../../lib/facebook';
 
-export const POST: APIRoute = async ({ request, locals }) => {
+const handler: APIRoute = async ({ locals }) => {
   try {
-    let customToken: string | undefined;
-    try {
-      const body = await request.json();
-      if (body && body.token) {
-        customToken = body.token;
-      }
-    } catch {
-      // Body may be empty
-    }
-
-    const result = await syncFacebookPosts(locals, customToken);
-
+    const result = await syncFacebookPosts(locals);
     return new Response(JSON.stringify(result), {
       status: result.success ? 200 : 400,
       headers: { 'Content-Type': 'application/json' },
@@ -33,3 +22,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
     );
   }
 };
+
+export const GET: APIRoute = handler;
+export const POST: APIRoute = handler;
