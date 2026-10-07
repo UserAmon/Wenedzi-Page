@@ -1,11 +1,16 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from "../../layouts/Layout.astro";
 ---
 
-<Layout title="Rachunek i Składki | 3 SDH »Wenedzi«" description="Numer rachunku bankowego 3 SDH Wenedzi, zasady opłacania składek członkowskich i opłat za biwaki.">
+<Layout
+  title="Rachunek i Składki | 3 SDH »Wenedzi«"
+  description="Numer rachunku bankowego 3 SDH Wenedzi, zasady opłacania składek członkowskich i opłat za biwaki."
+>
   <div class="bg-slate-950 text-white py-12 border-b border-slate-800">
     <div class="max-w-4xl mx-auto px-4 sm:px-6">
-      <div class="inline-flex items-center gap-2 text-xs font-semibold text-emerald-400 mb-2">
+      <div
+        class="inline-flex items-center gap-2 text-xs font-semibold text-emerald-400 mb-2"
+      >
         <a href="/" class="hover:underline">Strona Główna</a>
         <span>/</span>
         <span class="text-slate-400">Dla Rodziców</span>
@@ -14,161 +19,228 @@ import Layout from '../../layouts/Layout.astro';
         Rachunek Bankowy i Składki
       </h1>
       <p class="mt-2 text-slate-400 text-sm sm:text-base">
-        Informacje o numerze konta, terminach płatności składek członkowskich oraz wpłatach za biwaki i obozy.
+        Informacje o numerze konta, terminach płatności składek członkowskich
+        oraz wpłatach za biwaki i obozy.
       </p>
     </div>
   </div>
 
   <div class="max-w-4xl mx-auto px-4 sm:px-6 py-12 space-y-8">
-    
     <!-- GŁÓWNA KARTA Z DANYMI DO PRZELEWU -->
-    <div class="bg-white rounded-2xl p-6 sm:p-8 border-2 border-emerald-700/40 shadow-md space-y-6">
+    <div
+      class="bg-white rounded-2xl p-6 sm:p-8 border-2 border-emerald-700/40 shadow-md space-y-6"
+    >
       <div class="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <span class="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full">
+          <span
+            class="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full"
+          >
             Oficjalny rachunek bankowy
           </span>
-          <h2 class="text-2xl font-bold text-slate-900 mt-2">Dane do przelewu</h2>
+          <h2 class="text-2xl font-bold text-slate-900 mt-2">
+            Dane do przelewu
+          </h2>
         </div>
       </div>
 
       <!-- Kopia numeru konta -->
       <div class="bg-slate-900 text-white p-5 rounded-xl space-y-2">
-        <span class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Numer konta bankowego (IBAN):</span>
+        <span
+          class="text-xs text-slate-400 uppercase tracking-wider font-semibold"
+          >Numer konta bankowego (IBAN):</span
+        >
         <div class="flex items-center justify-between flex-wrap gap-3">
-          <code id="account-number" class="text-lg sm:text-2xl font-mono font-bold tracking-wider text-emerald-400 select-all">
-            12 3456 7890 0000 0000 1234 5678
+          <code
+            id="account-number"
+            class="text-lg sm:text-2xl font-mono font-bold tracking-wider text-emerald-400 select-all"
+          >
+            60 1020 1026 0000 1202 0505 6751
           </code>
           <button
             id="copy-account-btn"
             type="button"
             class="px-4 py-2 rounded-lg bg-emerald-700 hover:bg-emerald-600 active:scale-95 text-white font-bold text-xs transition-all flex items-center gap-2"
           >
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
+              ></path>
             </svg>
             <span id="copy-account-text">Kopiuj numer konta</span>
           </button>
         </div>
-        <p class="text-xs text-slate-400 pt-1">
-          <em>(Uwaga: powyższy numer to placeholder – po podaniu właściwego numeru konta drużynowy zaktualizuje dane).</em>
-        </p>
       </div>
 
       <!-- Odbiorca i adres -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-slate-700 pt-2">
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-slate-700 pt-2"
+      >
         <div>
-          <span class="font-semibold text-slate-900 block">Nazwa odbiorcy:</span>
-          <span>Związek Harcerstwa Rzeczypospolitej</span><br />
-          <span class="text-slate-500">Szczeciński Związek Drużyn Harcerzy / 3 SDH "Wenedzi"</span>
-        </div>
-        <div>
-          <span class="font-semibold text-slate-900 block">Bank:</span>
-          <span>Bank Pekao S.A. / Santander Bank Polska</span>
+          <span class="font-semibold text-slate-900 block"
+            >Nazwa odbiorcy (PKO):</span
+          >
+          <span>3 SDH Wenedzi Okręg Północno-Zachodni</span><br />
         </div>
       </div>
     </div>
 
     <!-- SKŁADKI CZŁONKOWSKIE -->
-    <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+    <div
+      class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6"
+    >
       <div class="flex items-center gap-3">
         <span class="text-2xl">💳</span>
-        <h2 class="text-2xl font-bold text-slate-900">Podstawowa Harcerska Składka Członkowska (PSC)</h2>
+        <h2 class="text-2xl font-bold text-slate-900">
+          Harcerska Składka Członkowska
+        </h2>
       </div>
 
       <p class="text-slate-700 text-sm sm:text-base leading-relaxed">
-        Składka członkowska jest podstawowym obowiązkiem każdego harcerza (wynikającym z Prawa Harcerskiego). Pokrywa m.in. ubezpieczenie NNW harcerza, koszty materiałów programowych na zbiórki, dofinansowanie sprzętu pionierskiego oraz składkę odprowadzaną do hufca i naczelnictwa.
+        Składka członkowska jest podstawowym obowiązkiem każdego harcerza.
+        Pokrywa część organizacyjną - ubezpieczenie NNW harcerza, składkę
+        odprowadzaną do hufca i naczelnictwa - oraz część "darowizny" czyli
+        koszty materiałów programowych na zbiórki, dofinansowanie sprzętu
+        pionierskiego. Wychowawcy nie otrzymują wynagrodzenia - działamy
+        charytatywnie i dla dobra zabawy naszych dzieci. Zbiórki, obozy i
+        wszystkie działania organizujemy w czasie wolnym od pracy i nauki, a
+        harcerstwo to pasja i świetna zabawa!
       </p>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
-          <span class="text-xs text-slate-500 font-semibold block uppercase">Wysokość składki:</span>
-          <span class="text-2xl font-extrabold text-emerald-800">60 zł</span>
-          <span class="text-xs text-slate-500 block">/ kwartał (lub 20 zł / msc)</span>
-        </div>
-        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
-          <span class="text-xs text-slate-500 font-semibold block uppercase">Termin wpłat:</span>
-          <span class="text-sm font-bold text-slate-800 block mt-1">Do 15. dnia pierwszego miesiąca kwartału</span>
-          <span class="text-xs text-slate-500">(15 I, 15 IV, 15 VII, 15 X)</span>
-        </div>
-        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
-          <span class="text-xs text-slate-500 font-semibold block uppercase">Ubezpieczenie:</span>
-          <span class="text-sm font-bold text-slate-800 block mt-1">NNW 24/7</span>
-          <span class="text-xs text-slate-500">Objęte składką na wszystkich wyjazdach</span>
-        </div>
-      </div>
-
-      <!-- Wzór tytułu przelewu -->
-      <div class="p-5 rounded-xl bg-emerald-50 border border-emerald-200 space-y-2">
-        <span class="font-bold text-emerald-950 text-sm block">Wzór tytułu przelewu za składki:</span>
-        <div class="flex items-center justify-between flex-wrap gap-2">
-          <code id="title-format" class="text-sm sm:text-base font-mono font-bold text-emerald-900 bg-white px-3 py-1.5 rounded-lg border border-emerald-300">
-            Składka członkowska [I/II/III/IV] kw. [ROK], Jan Kowalski, 3 SDH Wenedzi
-          </code>
-          <button
-            id="copy-title-btn"
-            type="button"
-            class="px-3 py-1.5 rounded-lg bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-xs transition-colors"
+          <span class="text-xs text-slate-500 font-semibold block uppercase"
+            >Wysokość składki za pełen rok:</span
           >
-            Kopiuj wzór
-          </button>
+          <span class="text-2xl font-extrabold text-emerald-800">360 zł</span>
+          <span class="text-xs text-slate-500 block"
+            >lub 180 zł za półrocze</span
+          >
         </div>
-        <p class="text-xs text-emerald-800">
-          Bardzo prosimy o wpisywanie imienia i nazwiska harcerza w tytule – ułatwia to precyzyjne księgowanie!
-        </p>
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+          <span class="text-xs text-slate-500 font-semibold block uppercase"
+            >Termin wpłat:</span
+          >
+          <span class="text-sm font-bold text-slate-800 block mt-1"
+            >1. Półrocze - 10 Listopada</span
+          >2. Półrocze - 10 Lutego
+        </div>
+      </div>
+      <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+        <span class="text-xs text-slate-500 font-semibold block uppercase"
+          >Ubezpieczenie:</span
+        >
+        <span class="text-sm font-bold text-slate-800 block mt-1">NNW 24/7</span
+        >
+        <span class="text-xs text-slate-500"
+          >Ubezpieczenie obejmuje wszystkie zbiórki i wyjazdy</span
+        >
       </div>
     </div>
 
-    <!-- WPŁATY ZA BIWAKI I OBOZY -->
-    <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-4">
-      <div class="flex items-center gap-3">
-        <span class="text-2xl">⛺</span>
-        <h2 class="text-2xl font-bold text-slate-900">Wpłaty za Biwaki i Obozy Letnie</h2>
+    <!-- Wzór tytułu przelewu -->
+    <div
+      class="p-5 rounded-xl bg-emerald-50 border border-emerald-200 space-y-2"
+    >
+      <span class="font-bold text-emerald-950 text-sm block"
+        >Wzór tytułu przelewu za składkę:</span
+      >
+      <div class="flex items-center justify-between flex-wrap gap-2">
+        <code
+          id="title-format"
+          class="text-sm sm:text-base font-mono font-bold text-emerald-900 bg-white px-3 py-1.5 rounded-lg border border-emerald-300"
+        >
+          Składka członkowska i darowizna za rok harcerski 2026/2027, "Pełen
+          rok" / "1 półrocze" / "2 półrocze", Jan Kowalski, 3 SDH Wenedzi
+        </code>
+        <button
+          id="copy-title-btn"
+          type="button"
+          class="px-3 py-1.5 rounded-lg bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-xs transition-colors"
+        >
+          Kopiuj wzór
+        </button>
       </div>
-      <p class="text-slate-700 text-sm sm:text-base leading-relaxed">
-        Koszty wyjazdów (bilety kolejowe, wyżywienie, noclegi, wstępy) są opłacane na to samo konto, jednak z innym tytułem przelewu:
-      </p>
-      
-      <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2 text-sm font-mono">
-        <div><strong>Wzór dla biwaku:</strong> <code>DŚW Biwak [Nazwa/Miesiąc], Jan Kowalski, 3 SDH</code></div>
-        <div><strong>Wzór dla obozu letniego:</strong> <code>DŚW Obóz Harcerski [ROK], Jan Kowalski, 3 SDH</code></div>
-      </div>
-      <p class="text-xs text-slate-500">
-        <em>Skrót "DŚW" oznacza Dodatkową Składkę Zadaniową zgodnie z przepisami harcerskimi.</em>
+      <p class="text-xs text-emerald-800">
+        Bardzo prosimy o wpisywanie imienia i nazwiska harcerza w tytule –
+        ułatwia to precyzyjne księgowanie!
       </p>
     </div>
-
   </div>
 
-  <script>
-    // Kopiowanie numeru konta
-    const btnAcc = document.getElementById('copy-account-btn');
-    const txtAcc = document.getElementById('account-number');
-    const labelAcc = document.getElementById('copy-account-text');
-    if (btnAcc && txtAcc && labelAcc) {
-      btnAcc.addEventListener('click', () => {
-        const num = txtAcc.innerText.replace(/\s+/g, '');
-        navigator.clipboard.writeText(num).then(() => {
-          labelAcc.innerText = 'Skopiowano!';
-          setTimeout(() => {
-            labelAcc.innerText = 'Kopiuj numer konta';
-          }, 2500);
-        });
-      });
-    }
+  <!-- WPŁATY ZA BIWAKI I OBOZY -->
+  <div
+    class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-4"
+  >
+    <div class="flex items-center gap-3">
+      <span class="text-2xl">⛺</span>
+      <h2 class="text-2xl font-bold text-slate-900">
+        Wpłaty za Biwaki i wyjazdy Letnie
+      </h2>
+    </div>
+    <p class="text-slate-700 text-sm sm:text-base leading-relaxed">
+      Koszty wyjazdów (bilety kolejowe, wyżywienie, noclegi, wstępy) są opłacane
+      na to samo konto, jednak z innym tytułem przelewu:
+    </p>
 
-    // Kopiowanie wzoru tytułu
-    const btnTitle = document.getElementById('copy-title-btn');
-    const txtTitle = document.getElementById('title-format');
-    if (btnTitle && txtTitle) {
-      btnTitle.addEventListener('click', () => {
-        navigator.clipboard.writeText(txtTitle.innerText.trim()).then(() => {
-          btnTitle.innerText = 'Skopiowano!';
-          setTimeout(() => {
-            btnTitle.innerText = 'Kopiuj wzór';
-          }, 2500);
-        });
-      });
-    }
-  </script>
+    <div
+      class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2 text-sm font-mono"
+    >
+      <div>
+        <strong>Wzór dla biwaku:</strong>
+        <code>Składka programowa biwak grudniowy Jan Kowalski</code>
+      </div>
+      <div>
+        <strong>Wzór dla wyjazdu letniego:</strong>
+        <code>Składka programowa Obóz/Kolonia, Jan Kowalski, 3 SDH Wenedzi</code
+        >
+      </div>
+    </div>
+    <p class="text-xs text-slate-500">
+      <em
+        >W przypadku płacenia za kilka rzeczy proszę robić to jednym przelewem z
+        pełnym opisem, np. „Składka roczna (360) i biwak w Podgrodziu (120), Jan
+        Kowalski</em
+      >
+    </p>
+  </div>
 </Layout>
+
+<script>
+  // Kopiowanie numeru konta
+  const btnAcc = document.getElementById("copy-account-btn");
+  const txtAcc = document.getElementById("account-number");
+  const labelAcc = document.getElementById("copy-account-text");
+  if (btnAcc && txtAcc && labelAcc) {
+    btnAcc.addEventListener("click", () => {
+      const num = txtAcc.innerText.replace(/\s+/g, "");
+      navigator.clipboard.writeText(num).then(() => {
+        labelAcc.innerText = "Skopiowano!";
+        setTimeout(() => {
+          labelAcc.innerText = "Kopiuj numer konta";
+        }, 2500);
+      });
+    });
+  }
+
+  // Kopiowanie wzoru tytułu
+  const btnTitle = document.getElementById("copy-title-btn");
+  const txtTitle = document.getElementById("title-format");
+  if (btnTitle && txtTitle) {
+    btnTitle.addEventListener("click", () => {
+      navigator.clipboard.writeText(txtTitle.innerText.trim()).then(() => {
+        btnTitle.innerText = "Skopiowano!";
+        setTimeout(() => {
+          btnTitle.innerText = "Kopiuj wzór";
+        }, 2500);
+      });
+    });
+  }
+</script>
