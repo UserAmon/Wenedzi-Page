@@ -353,7 +353,35 @@ const {
       </div>
     </footer>
 
-    <!-- Prosty skrypt do menu mobilnego -->
+    <!-- GLOBAL LIGHTBOX MODAL (przyciemnienie tła i powiększenie zdjęcia) -->
+    <div
+      id="lightbox-modal"
+      class="fixed inset-0 z-[100] bg-slate-950/90 backdrop-blur-md hidden items-center justify-center p-4 transition-all duration-200 opacity-0"
+      role="dialog"
+      aria-modal="true"
+    >
+      <button
+        id="lightbox-close"
+        type="button"
+        class="absolute top-4 right-4 sm:top-6 sm:right-6 w-11 h-11 rounded-full bg-slate-800/80 hover:bg-slate-700 text-white flex items-center justify-center transition-all shadow-lg focus:outline-none z-10 cursor-pointer"
+        aria-label="Zamknij"
+      >
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      <div class="relative max-w-5xl max-h-[90vh] flex items-center justify-center select-none">
+        <img
+          id="lightbox-img"
+          src=""
+          alt="Powiększone zdjęcie"
+          class="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl transition-transform duration-300"
+        />
+      </div>
+    </div>
+
+    <!-- Skrypt do menu mobilnego oraz Lightboxa -->
     <script>
       const btn = document.getElementById('mobile-menu-btn');
       const menu = document.getElementById('mobile-menu');
@@ -362,6 +390,61 @@ const {
           menu.classList.toggle('hidden');
         });
       }
+
+      // Obsługa Lightboxa
+      const modal = document.getElementById('lightbox-modal');
+      const modalImg = document.getElementById('lightbox-img') as HTMLImageElement;
+      const closeBtn = document.getElementById('lightbox-close');
+
+      function openLightbox(src: string, alt: string = '') {
+        if (!modal || !modalImg) return;
+        modalImg.src = src;
+        modalImg.alt = alt;
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        requestAnimationFrame(() => {
+          modal.classList.remove('opacity-0');
+          modal.classList.add('opacity-100');
+        });
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        if (!modal || !modalImg) return;
+        modal.classList.remove('opacity-100');
+        modal.classList.add('opacity-0');
+        setTimeout(() => {
+          modal.classList.remove('flex');
+          modal.classList.add('hidden');
+          modalImg.src = '';
+          document.body.style.overflow = '';
+        }, 200);
+      }
+
+      closeBtn?.addEventListener('click', closeLightbox);
+      modal?.addEventListener('click', (e) => {
+        if (e.target === modal || (e.target as HTMLElement).closest('#lightbox-close')) {
+          closeLightbox();
+        }
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+          closeLightbox();
+        }
+      });
+
+      document.addEventListener('click', (e) => {
+        const target = (e.target as HTMLElement).closest('[data-lightbox-src], img.zoomable-image');
+        if (target) {
+          e.preventDefault();
+          const src = target.getAttribute('data-lightbox-src') || (target as HTMLImageElement).currentSrc || (target as HTMLImageElement).src;
+          const alt = (target as HTMLImageElement).alt || '';
+          if (src) {
+            openLightbox(src, alt);
+          }
+        }
+      });
     </script>
   </body>
 </html>

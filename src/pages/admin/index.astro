@@ -188,89 +188,46 @@ try {
           </form>
         </div>
 
-        <!-- SYNCHRONIZACJA Z FACEBOOKIEM -->
-        <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-5">
-          <div class="flex items-center gap-3 pb-3 border-b border-slate-100">
-            <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
-              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-              </svg>
+        <!-- SYNCHRONIZACJA Z FACEBOOKIEM (JEDEN PRZYCISK) -->
+        <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-5 flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="flex items-center gap-3 pb-3 border-b border-slate-100">
+              <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shadow-xs">
+                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-slate-900">Synchronizacja z Facebookiem</h2>
+                <p class="text-xs text-slate-500">Oficjalny fanpage 3 SDH "Wenedzi" (@wenedzi)</p>
+              </div>
             </div>
-            <div>
-              <h2 class="text-lg font-bold text-slate-900">Synchronizacja z Facebookiem</h2>
-              <p class="text-xs text-slate-500">Fanpage @wenedzi (ID: 241908756183484)</p>
-            </div>
-          </div>
 
-          <!-- Opcja 1: Jednolity strumień na stronie głównej -->
-          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 space-y-2.5">
-            <span class="font-bold flex items-center gap-1.5 text-slate-900">
-              <span>🌲</span>
-              <span>Jednolity strumień 5 najnowszych postów</span>
-            </span>
-            <p class="text-slate-600 leading-relaxed">
-              Na stronie głównej pojawia się <strong>5 najnowszych wpisów wg daty</strong>. Każdy post z Facebooka prezentowany jest w tym samym eleganckim layoucie karty co komunikaty drużyny.
-            </p>
-            <button
-              type="button"
-              id="seed-defaults-btn"
-              class="w-full py-2 px-3 rounded-lg bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-xs transition-colors shadow-sm flex items-center justify-center gap-1.5"
-            >
-              <span>📥 Przywróć 5 startowych postów (FB + drużyna) w D1</span>
-            </button>
-          </div>
-
-          <!-- Opcja 2: Webhook do bazy SQLite D1 -->
-          <div class="p-3.5 rounded-xl bg-blue-50 border border-blue-200 text-xs text-blue-950 space-y-2">
-            <span class="font-bold flex items-center gap-1.5 text-blue-900">
-              <span>⚡</span>
-              <span>Automatyczny Webhook do bazy D1 (Make / Zapier / IFTTT):</span>
-            </span>
-            <p class="text-blue-800 leading-relaxed">
-              Możesz połączyć Fanpage z naszą bazą przez darmowy Make.com lub Zapier (wyzwalacz: <em>Nowy post na fanpage</em> &rarr; akcja: <em>HTTP POST do poniższego URL</em>):
-            </p>
-            <div class="flex items-center gap-2">
-              <code id="webhook-url" class="font-mono bg-white px-2.5 py-1.5 rounded border border-blue-300 text-[11px] text-blue-900 flex-1 truncate">
-                https://wenedzi-page.leszczluki.workers.dev/api/webhooks/facebook
-              </code>
-              <button
-                type="button"
-                id="copy-webhook-btn"
-                class="px-2.5 py-1.5 bg-blue-700 hover:bg-blue-600 text-white rounded text-[11px] font-bold whitespace-nowrap"
-              >
-                Kopiuj URL
-              </button>
+            <div class="p-4 rounded-xl bg-blue-50/80 border border-blue-200 text-xs text-blue-950 space-y-2 leading-relaxed">
+              <p class="font-bold text-blue-900 flex items-center gap-1.5">
+                <span>⚡</span>
+                <span>Automatyczne pobieranie najnowszych wpisów</span>
+              </p>
+              <p>
+                Kliknij przycisk poniżej, aby sprawdzić <strong>5 ostatnich postów z Facebooka wraz z datami i wszystkimi zdjęciami</strong>, zapisać je w bazie danych i zaktualizować stronę główną.
+              </p>
             </div>
           </div>
 
-          <!-- Opcja 3: Token Meta Graph API -->
-          <div class="space-y-3 pt-2 border-t border-slate-100">
-            <label for="fb-token" class="block text-xs font-bold uppercase tracking-wider text-slate-700">
-              Opcja 3: Page Access Token (Meta Graph API):
-            </label>
-            <input
-              type="text"
-              id="fb-token"
-              placeholder="Wklej tutaj Page Access Token wygenerowany w Meta for Developers..."
-              class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-blue-600"
-            />
-            <p class="text-[11px] text-slate-500 leading-relaxed">
-              Jeśli posiadasz konto deweloperskie Meta, wygeneruj długoterminowy token dla strony <code>241908756183484</code> w Graph API Explorer z uprawnieniem <code>pages_read_engagement</code>.
-            </p>
-
+          <div class="space-y-3 pt-4">
             <button
               type="button"
               id="sync-fb-btn"
-              class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm transition-colors shadow-md flex items-center justify-center gap-2"
+              class="w-full py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer"
             >
-              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+              <svg id="sync-fb-icon" class="w-4 h-4 fill-current" viewBox="0 0 24 24">
                 <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
               </svg>
-              <span>Synchronizuj przez Token Graph API</span>
+              <span id="sync-fb-btn-text">Pobierz posty z FB</span>
             </button>
-          </div>
 
-          <div id="fb-sync-status" class="hidden p-3 rounded-xl text-xs font-medium"></div>
+            <div id="fb-sync-status" class="hidden p-3 rounded-xl text-xs font-medium"></div>
+          </div>
         </div>
 
       </div>
@@ -331,10 +288,24 @@ try {
                   <td class="p-3 whitespace-nowrap text-slate-400">
                     {p.created_at?.slice(0, 10)}
                   </td>
-                  <td class="p-3 text-right whitespace-nowrap">
+                  <td class="p-3 text-right whitespace-nowrap space-x-2">
+                    {p.source === 'local' && (
+                      <button
+                        type="button"
+                        class="edit-post-btn text-emerald-700 hover:text-emerald-900 font-bold hover:underline cursor-pointer"
+                        data-id={p.id}
+                        data-title={p.title || ''}
+                        data-author={p.author_name || ''}
+                        data-content={p.content}
+                        data-images={p.images_json || ''}
+                        data-pinned={p.is_pinned ? '1' : '0'}
+                      >
+                        Edytuj
+                      </button>
+                    )}
                     <button
                       type="button"
-                      class="delete-post-btn text-red-600 hover:text-red-800 font-bold hover:underline"
+                      class="delete-post-btn text-red-600 hover:text-red-800 font-bold hover:underline cursor-pointer"
                       data-id={p.id}
                     >
                       Usuń
@@ -351,17 +322,115 @@ try {
 
   </div>
 
+  <!-- MODAL EDYCJI POSTA LOKALNEGO -->
+  <div
+    id="edit-modal"
+    class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs hidden items-center justify-center p-4"
+  >
+    <div class="bg-white rounded-2xl max-w-xl w-full p-6 sm:p-8 border border-slate-200 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+          <span>✏️</span>
+          <span>Edycja posta lokalnego</span>
+        </h3>
+        <button
+          type="button"
+          id="close-edit-modal-btn"
+          class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center font-bold cursor-pointer"
+        >
+          ✕
+        </button>
+      </div>
+
+      <form id="edit-post-form" class="space-y-4">
+        <input type="hidden" id="edit-post-id" />
+
+        <div>
+          <label for="edit-post-title" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+            Tytuł posta:
+          </label>
+          <input
+            type="text"
+            id="edit-post-title"
+            class="w-full px-4 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-700"
+          />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label for="edit-post-author" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+              Autor:
+            </label>
+            <input
+              type="text"
+              id="edit-post-author"
+              class="w-full px-4 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-700"
+            />
+          </div>
+          <div class="flex items-center pt-5">
+            <label class="flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer">
+              <input
+                type="checkbox"
+                id="edit-post-pinned"
+                class="rounded text-emerald-800 focus:ring-emerald-700 w-4 h-4 cursor-pointer"
+              />
+              <span>📌 Przypnij na górze</span>
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label for="edit-post-content" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+            Treść posta: *
+          </label>
+          <textarea
+            id="edit-post-content"
+            rows="6"
+            required
+            class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-700 font-normal"
+          ></textarea>
+        </div>
+
+        <div>
+          <label for="edit-post-images" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+            Linki do zdjęć (po jednym w linii):
+          </label>
+          <textarea
+            id="edit-post-images"
+            rows="3"
+            placeholder="https://...&#10;https://..."
+            class="w-full px-4 py-2 rounded-xl border border-slate-300 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-emerald-700"
+          ></textarea>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-2">
+          <button
+            type="button"
+            id="cancel-edit-btn"
+            class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs cursor-pointer"
+          >
+            Anuluj
+          </button>
+          <button
+            type="submit"
+            class="px-5 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-xs shadow-md cursor-pointer"
+          >
+            Zapisz zmiany
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
     const ADMIN_PASS = 'wenedzi3';
     const authStorageKey = 'wenedzi_admin_auth';
-    const fbTokenStorageKey = 'wenedzi_fb_token';
 
     const loginSection = document.getElementById('login-section');
     const dashboardSection = document.getElementById('dashboard-section');
     const loginForm = document.getElementById('login-form');
     const loginError = document.getElementById('login-error');
     const logoutBtn = document.getElementById('logout-btn');
-    const fbTokenInput = document.getElementById('fb-token') as HTMLInputElement;
 
     function checkAuth() {
       const isAuth = sessionStorage.getItem(authStorageKey) === 'true';
@@ -369,12 +438,6 @@ try {
         loginSection?.classList.add('hidden');
         dashboardSection?.classList.remove('hidden');
         logoutBtn?.classList.remove('hidden');
-
-        // Załaduj zapisany token FB
-        const savedToken = localStorage.getItem(fbTokenStorageKey);
-        if (savedToken && fbTokenInput) {
-          fbTokenInput.value = savedToken;
-        }
       } else {
         loginSection?.classList.remove('hidden');
         dashboardSection?.classList.add('hidden');
@@ -464,34 +527,18 @@ try {
       }
     });
 
-    // Przywracanie / Zasilanie bazy 5 startowymi postami
-    const seedDefaultsBtn = document.getElementById('seed-defaults-btn');
-    seedDefaultsBtn?.addEventListener('click', async () => {
-      if (confirm('Czy na pewno chcesz zapisać 5 oficjalnych postów w bazie SQLite (D1)?')) {
-        try {
-          const res = await fetch('/api/seed', { method: 'POST' });
-          const data = await res.json() as any;
-          alert(data.message || 'Posty zostały zapisane w bazie!');
-          window.location.reload();
-        } catch (err: any) {
-          alert('Błąd: ' + err.message);
-        }
-      }
-    });
-
-    // Synchronizacja z Facebookiem
+    // Synchronizacja z Facebookiem: Pobierz posty z FB
     const syncFbBtn = document.getElementById('sync-fb-btn');
+    const syncFbBtnText = document.getElementById('sync-fb-btn-text');
     const fbSyncStatus = document.getElementById('fb-sync-status');
 
     syncFbBtn?.addEventListener('click', async () => {
-      const token = fbTokenInput?.value.trim();
-      if (token) {
-        localStorage.setItem(fbTokenStorageKey, token);
-      }
+      if (syncFbBtnText) syncFbBtnText.textContent = 'Pobieram 5 postów z Facebooka...';
+      if (syncFbBtn) (syncFbBtn as HTMLButtonElement).disabled = true;
 
       if (fbSyncStatus) {
-        fbSyncStatus.className = 'p-3 rounded-xl text-xs font-medium bg-blue-50 text-blue-800';
-        fbSyncStatus.textContent = 'Trwa łączenie z Facebook Graph API i pobieranie postów...';
+        fbSyncStatus.className = 'p-3 rounded-xl text-xs font-medium bg-blue-50 text-blue-800 block';
+        fbSyncStatus.textContent = 'Trwa sprawdzanie fanpage @wenedzi i pobieranie 5 postów wraz ze zdjęciami...';
         fbSyncStatus.classList.remove('hidden');
       }
 
@@ -499,27 +546,109 @@ try {
         const res = await fetch('/api/sync-fb', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token: token || undefined }),
         });
 
         const data = await res.json() as any;
         if (data.success) {
           if (fbSyncStatus) {
-            fbSyncStatus.className = 'p-3 rounded-xl text-xs font-medium bg-emerald-50 text-emerald-800';
-            fbSyncStatus.textContent = data.message || 'Pomyślnie zsynchronizowano posty z Facebooka!';
+            fbSyncStatus.className = 'p-3 rounded-xl text-xs font-medium bg-emerald-50 text-emerald-800 block';
+            fbSyncStatus.textContent = data.message || 'Pomyślnie zsynchronizowano 5 postów z Facebooka!';
           }
-          setTimeout(() => window.location.reload(), 1500);
+          setTimeout(() => window.location.reload(), 1200);
         } else {
           if (fbSyncStatus) {
-            fbSyncStatus.className = 'p-3 rounded-xl text-xs font-medium bg-amber-50 text-amber-900';
+            fbSyncStatus.className = 'p-3 rounded-xl text-xs font-medium bg-amber-50 text-amber-900 block';
             fbSyncStatus.textContent = data.message || 'Nie udało się pobrać postów.';
           }
+          if (syncFbBtnText) syncFbBtnText.textContent = 'Pobierz posty z FB';
+          if (syncFbBtn) (syncFbBtn as HTMLButtonElement).disabled = false;
         }
       } catch (err: any) {
         if (fbSyncStatus) {
-          fbSyncStatus.className = 'p-3 rounded-xl text-xs font-medium bg-red-50 text-red-800';
+          fbSyncStatus.className = 'p-3 rounded-xl text-xs font-medium bg-red-50 text-red-800 block';
           fbSyncStatus.textContent = 'Błąd połączenia: ' + err.message;
         }
+        if (syncFbBtnText) syncFbBtnText.textContent = 'Pobierz posty z FB';
+        if (syncFbBtn) (syncFbBtn as HTMLButtonElement).disabled = false;
+      }
+    });
+
+    // Edycja posta lokalnego
+    const editModal = document.getElementById('edit-modal');
+    const closeEditModalBtn = document.getElementById('close-edit-modal-btn');
+    const cancelEditBtn = document.getElementById('cancel-edit-btn');
+    const editPostForm = document.getElementById('edit-post-form');
+    const editPostId = document.getElementById('edit-post-id') as HTMLInputElement;
+    const editPostTitle = document.getElementById('edit-post-title') as HTMLInputElement;
+    const editPostAuthor = document.getElementById('edit-post-author') as HTMLInputElement;
+    const editPostContent = document.getElementById('edit-post-content') as HTMLTextAreaElement;
+    const editPostImages = document.getElementById('edit-post-images') as HTMLTextAreaElement;
+    const editPostPinned = document.getElementById('edit-post-pinned') as HTMLInputElement;
+
+    function closeEditModal() {
+      editModal?.classList.add('hidden');
+      editModal?.classList.remove('flex');
+    }
+
+    closeEditModalBtn?.addEventListener('click', closeEditModal);
+    cancelEditBtn?.addEventListener('click', closeEditModal);
+
+    document.querySelectorAll('.edit-post-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id') || '';
+        const title = btn.getAttribute('data-title') || '';
+        const author = btn.getAttribute('data-author') || '';
+        const content = btn.getAttribute('data-content') || '';
+        const pinned = btn.getAttribute('data-pinned') === '1';
+        const imagesRaw = btn.getAttribute('data-images') || '';
+
+        let imagesList: string[] = [];
+        try {
+          if (imagesRaw) imagesList = JSON.parse(imagesRaw);
+        } catch {}
+
+        if (editPostId) editPostId.value = id;
+        if (editPostTitle) editPostTitle.value = title;
+        if (editPostAuthor) editPostAuthor.value = author;
+        if (editPostContent) editPostContent.value = content;
+        if (editPostPinned) editPostPinned.checked = pinned;
+        if (editPostImages) editPostImages.value = imagesList.join('\n');
+
+        editModal?.classList.remove('hidden');
+        editModal?.classList.add('flex');
+      });
+    });
+
+    editPostForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = editPostId?.value;
+      if (!id) return;
+
+      const title = editPostTitle?.value;
+      const authorName = editPostAuthor?.value;
+      const content = editPostContent?.value;
+      const isPinned = editPostPinned?.checked;
+      const images = (editPostImages?.value || '')
+        .split('\n')
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0 && s.startsWith('http'));
+
+      try {
+        const res = await fetch(`/api/posts/${encodeURIComponent(id)}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title, authorName, content, isPinned, images }),
+        });
+
+        const data = await res.json() as any;
+        if (data.success) {
+          alert('Post został pomyślnie zaktualizowany!');
+          window.location.reload();
+        } else {
+          alert('Błąd: ' + (data.error || 'Nie udało się zapisać zmian.'));
+        }
+      } catch (err: any) {
+        alert('Błąd sieci: ' + err.message);
       }
     });
 
@@ -548,14 +677,9 @@ try {
       });
     });
 
-    // Kopiowanie webhooka
-    document.getElementById('copy-webhook-btn')?.addEventListener('click', () => {
-      const urlEl = document.getElementById('webhook-url');
-      if (urlEl) {
-        navigator.clipboard.writeText(urlEl.innerText.trim()).then(() => {
-          alert('Skopiowano URL webhooka do schowka!');
-        });
-      }
+    // Odśwież listę
+    document.getElementById('refresh-posts-btn')?.addEventListener('click', () => {
+      window.location.reload();
     });
 
     checkAuth();

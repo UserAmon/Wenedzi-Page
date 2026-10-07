@@ -150,12 +150,12 @@ export async function getAllPosts(locals: any): Promise<Post[]> {
 
     const localPosts = await executeD1Query<Post>(
       locals,
-      `SELECT * FROM posts WHERE source = 'local' ORDER BY created_at DESC LIMIT 1`
+      `SELECT * FROM posts WHERE source = 'local' ORDER BY is_pinned DESC, created_at DESC LIMIT 5`
     );
 
     const fbPosts = await executeD1Query<Post>(
       locals,
-      `SELECT * FROM posts WHERE source = 'facebook' ORDER BY created_at DESC LIMIT 4`
+      `SELECT * FROM posts WHERE source = 'facebook' ORDER BY created_at DESC LIMIT 5`
     );
 
     const combined: Post[] = [...(localPosts.length > 0 ? localPosts : [welcome]), ...fbPosts];
@@ -163,12 +163,60 @@ export async function getAllPosts(locals: any): Promise<Post[]> {
     // Sortowanie chronologiczne: najnowsze na górze
     combined.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
-    return combined.slice(0, 5);
+    return combined;
   } catch (err) {
     console.error('Błąd pobierania postów z bazy D1:', err);
   }
 
   return [getWelcomePost()];
+}
+
+// Pobieranie pojedynczego posta po ID
+export async function getPostById(locals: any, id: string): Promise<Post | null> {
+  try {
+    const rows = await executeD1Query<Post>(locals, `SELECT * FROM posts WHERE id = ? LIMIT 1`, [id]);
+    if (rows && rows.length > 0) return rows[0];
+  } catch (err) {
+    console.error('Błąd pobierania posta po ID:', err);
+  }
+
+  // Fallback dla posta powitalnego
+  if (id === 'local-welcome') {
+    return getWelcomePost();
+  }
+
+  return null;
+}
+
+// Aktualizacja istniejącego posta lokalnego
+export async function updateLocalPost(
+  locals: any,
+  id: string,
+  data: {
+    title?: string;
+    content: string;
+    images: string[];
+    authorName?: string;
+    isPinned?: boolean;
+  }
+): Promise<boolean> {
+  const imagesJson = data.images && data.images.length > 0 ? JSON.stringify(data.images) : null;
+  const sql = `
+    UPDATE posts
+    SET title = ?, content = ?, images_json = ?, author_name = ?, is_pinned = ?, updated_at = datetime('now')
+    WHERE id = ?
+  `;
+  const params = [
+    data.title || null,
+    data.content,
+    imagesJson,
+    data.authorName || 'Drużynowy',
+    data.isPinned ? 1 : 0,
+    id,
+  ];
+
+  await executeD1Query(locals, sql, params);
+  return true;
 }
 
 // Dodawanie posta lokalnego lub facebookowego

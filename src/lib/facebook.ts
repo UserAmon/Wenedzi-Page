@@ -51,7 +51,7 @@ export async function fetchLiveFacebookPosts(): Promise<Post[]> {
     const posts: Post[] = [];
     let cur = 0;
 
-    while (posts.length < 4) {
+    while (posts.length < 5) {
       const found = s.indexOf('"message":{"text":', cur);
       if (found === -1) break;
       cur = found + 20;
@@ -64,8 +64,8 @@ export async function fetchLiveFacebookPosts(): Promise<Post[]> {
       const text = decodeUnicode(msgMatch[1]).trim();
       if (text.length < 15) continue;
 
-      // Kontekst wokół wiadomości na potrzeby linku i zdjęć (16KB)
-      const context = s.slice(Math.max(0, found - 8000), Math.min(s.length, found + 12000));
+      // Kontekst wokół wiadomości na potrzeby linku i zdjęć (25KB)
+      const context = s.slice(Math.max(0, found - 10000), Math.min(s.length, found + 15000));
 
       // Szukanie najbliższego creation_time (zakres +/- 25KB wokół wiadomości)
       const searchRange = s.slice(Math.max(0, found - 25000), Math.min(s.length, found + 25000));
@@ -85,7 +85,7 @@ export async function fetchLiveFacebookPosts(): Promise<Post[]> {
         ? urlMatch[1].replace(/\\\//g, '/')
         : FB_PAGE_URL;
 
-      // Wyciągamy media_id zdjęć
+      // Wyciągamy media_id wszystkich zdjęć powiązanych z postem
       const mediaIdMatches = [
         ...context.matchAll(/media_id=([0-9]+)/g),
         ...context.matchAll(/"Photo","id":"([0-9]+)"/g),
@@ -93,8 +93,8 @@ export async function fetchLiveFacebookPosts(): Promise<Post[]> {
       ].map((m) => m[1]);
 
       const uniqueMediaIds = [...new Set(mediaIdMatches)];
-      // Dokładnie 2 zdjęcia z posta na FB (serwowane bezpośrednio z FB przez proxy /api/fb-image)
-      const photos = uniqueMediaIds.slice(0, 2).map((id) => `/api/fb-image?id=${id}`);
+      // Zapisujemy wszystkie zdjęcia do bazy (serwowane bezpośrednio z FB przez proxy /api/fb-image)
+      const photos = uniqueMediaIds.map((id) => `/api/fb-image?id=${id}`);
 
       // Unikamy duplikatów
       if (!posts.some((p) => p.content.slice(0, 40) === text.slice(0, 40))) {
