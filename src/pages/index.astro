@@ -363,28 +363,83 @@ function truncatePostContent(content: string): { text: string; isTruncated: bool
       <aside class="space-y-6">
         
         <!-- Widżet: Najbliższa zbiórka -->
-        <div class="bg-gradient-to-br from-emerald-900 to-slate-900 text-white rounded-2xl p-6 shadow-md border border-emerald-800 space-y-4">
+        <div class="bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-900 text-white rounded-2xl p-5 sm:p-6 shadow-md border border-emerald-800/80 space-y-4">
           <div class="flex items-center justify-between">
             <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Termin zbiórek</span>
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
           </div>
           <h3 class="text-xl font-extrabold">Najbliższa Zbiórka</h3>
-          <p class="text-sm text-slate-300 leading-relaxed">
-            Spotykamy się w każdą sobotę. Prosimy o punktualność, pełne umundurowanie oraz spakowany ekwipunek zbiórkowy!
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            Spotykamy się w każdą sobotę. Zbiórki odbywają się równolegle w dwóch pionach:
           </p>
-          <div class="pt-2 border-t border-emerald-800/80 space-y-2 text-xs">
-            <div class="flex items-center gap-2">
-              <span class="text-emerald-400">🕒 Kiedy:</span>
-              <span class="font-semibold">Sobota, godz. 10:00 – 13:00</span>
+
+          <div class="space-y-3 pt-1">
+            
+            <!-- DLA ZUCHÓW -->
+            <div class="p-3.5 rounded-xl bg-white/10 backdrop-blur-sm border border-amber-400/30 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-amber-300 flex items-center gap-1.5">
+                  <span>☀️</span>
+                  <span>Dla Zuchów (6–10 lat)</span>
+                </span>
+                <span class="text-[11px] font-bold text-white bg-amber-500/30 px-2 py-0.5 rounded">
+                  10:00 – 12:00
+                </span>
+              </div>
+              <p class="text-xs text-slate-200">
+                📍 <strong>W Harcówce:</strong> nasza sala w Kościele pw. Świętego Krzyża (ul. Wieniawskiego 5A, Szczecin).
+              </p>
+              <div class="pt-1 flex items-center gap-2">
+                <a
+                  href="tel:+48530116911"
+                  class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition-colors shadow-xs"
+                >
+                  <span>📞 Kontakt do Łukasza</span>
+                </a>
+                <a
+                  href="/dla-rodzicow/kontakt"
+                  class="text-[11px] text-amber-200 hover:underline"
+                >
+                  szczegóły &rarr;
+                </a>
+              </div>
             </div>
-            <div class="flex items-center gap-2">
-              <span class="text-emerald-400">📍 Gdzie:</span>
-              <span class="font-semibold">Harcówka / Szczecin</span>
+
+            <!-- DLA HARCERZY -->
+            <div class="p-3.5 rounded-xl bg-white/10 backdrop-blur-sm border border-emerald-500/40 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-300 flex items-center gap-1.5">
+                  <span>⚜️</span>
+                  <span>Dla Harcerzy (11+ lat)</span>
+                </span>
+                <span class="text-[11px] font-bold text-white bg-emerald-600/40 px-2 py-0.5 rounded">
+                  10:00 – ok. 14:00
+                </span>
+              </div>
+              <p class="text-xs text-slate-200">
+                🌲 <strong>W plenerze:</strong> leśne tereny Szczecina (miejsce ogłaszane z wyprzedzeniem).
+              </p>
+              <div class="pt-1 flex items-center gap-2">
+                <a
+                  href="tel:+48665516193"
+                  class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-colors shadow-xs"
+                >
+                  <span>📞 Kontakt do druha Przemka</span>
+                </a>
+                <a
+                  href="/dla-rodzicow/kontakt"
+                  class="text-[11px] text-emerald-300 hover:underline"
+                >
+                  szczegóły &rarr;
+                </a>
+              </div>
             </div>
+
           </div>
+
           <a
             href="/dla-harcerzy/ekwipunek-zbiorki"
-            class="block text-center w-full py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-600 font-bold text-xs transition-colors shadow"
+            class="block text-center w-full py-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-emerald-700/60 font-bold text-xs text-emerald-200 transition-colors shadow"
           >
             Sprawdź co spakować na zbiórkę &rarr;
           </a>
