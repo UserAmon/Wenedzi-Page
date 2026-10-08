@@ -1,30 +1,10 @@
 import type { APIRoute } from 'astro';
 import { fetchLiveFacebookPosts } from '../../lib/facebook';
-import { upsertFacebookPost, getWelcomePost, executeD1Query } from '../../lib/db';
+import { upsertFacebookPost } from '../../lib/db';
 
 const handler: APIRoute = async ({ locals }) => {
   try {
-    // 1. Zapewnij obecność posta powitalnego z datą na dziś
-    const welcome = getWelcomePost();
-    await executeD1Query(
-      locals,
-      `INSERT INTO posts (id, source, title, content, images_json, author_name, is_pinned, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
-       ON CONFLICT(id) DO UPDATE SET created_at = datetime('now')`,
-      [
-        welcome.id,
-        welcome.source,
-        welcome.title,
-        welcome.content,
-        welcome.images_json,
-        welcome.author_name,
-      ]
-    );
-
-    // 2. Wyczyść stare wpisy z bazy, aby zachować tylko świeże 4 posty z Facebooka
-    await executeD1Query(locals, `DELETE FROM posts WHERE id != 'local-welcome'`);
-
-    // 3. Pobierz na żywo 4 najnowsze posty z Facebooka ze zdjęciami
+    // Pobierz na żywo najnowsze posty z Facebooka ze zdjęciami
     const fbPosts = await fetchLiveFacebookPosts();
     let imported = 0;
 
@@ -43,7 +23,7 @@ const handler: APIRoute = async ({ locals }) => {
     return new Response(
       JSON.stringify({
         success: true,
-        message: `Zsynchronizowano post powitalny oraz ${imported} postów z Facebooka (ze zdjęciami).`,
+        message: `Zsynchronizowano ${imported} postów z Facebooka (ze zdjęciami).`,
         posts: fbPosts,
       }),
       {

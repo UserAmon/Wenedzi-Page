@@ -20,17 +20,3 @@ CREATE TABLE IF NOT EXISTS settings (
   key TEXT PRIMARY KEY,
   value TEXT
 );
-
--- Jedyny zhardkodowany post powitalny w bazie – z datą na dziś
-INSERT OR REPLACE INTO posts (id, source, title, content, images_json, author_name, is_pinned, created_at, updated_at)
-VALUES (
-  'local-welcome',
-  'local',
-  'Czuwaj! Witamy na oficjalnej stronie 3 SDH »Wenedzi«',
-  'Rozpoczynamy nowy rok harcerski pełen leśnych wyzwań, biwaków i wielkich przygód!\n\nNa naszej witrynie publikujemy najważniejsze komunikaty dla rodziców, materiały metodyczne dla harcerzy (w tym prawo harcerza i śpiewnik z chwytami) oraz relacje z życia drużyny. Do zobaczenia na zbiórkach!',
-  '["https://images.unsplash.com/photo-1517824806704-9040b037703b?auto=format&fit=crop&w=1200&q=80"]',
-  'Drużynowy',
-  1,
-  datetime('now'),
-  datetime('now')
-);

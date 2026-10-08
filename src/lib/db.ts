@@ -21,26 +21,6 @@ const CF_ACCOUNT_ID = typeof process !== 'undefined' ? process.env?.CLOUDFLARE_A
 const CF_DATABASE_ID = typeof process !== 'undefined' ? process.env?.CLOUDFLARE_DATABASE_ID : undefined;
 const CF_API_TOKEN = typeof process !== 'undefined' ? process.env?.CLOUDFLARE_API_TOKEN : undefined;
 
-// Jedyny zhardkodowany post powitalny w bazie – z datą na dziś
-export function getWelcomePost(): Post {
-  return {
-    id: 'local-welcome',
-    source: 'local',
-    title: 'Czuwaj! Witamy na oficjalnej stronie 3 SDH »Wenedzi«',
-    content:
-      'Rozpoczynamy nowy rok harcerski pełen leśnych wyzwań, biwaków i wielkich przygód!\n\nNa naszej witrynie publikujemy najważniejsze komunikaty dla rodziców, materiały metodyczne dla harcerzy (w tym prawo harcerza i śpiewnik z chwytami) oraz relacje z życia drużyny. Do zobaczenia na zbiórkach!',
-    images_json: JSON.stringify([
-      'https://images.unsplash.com/photo-1517824806704-9040b037703b?auto=format&fit=crop&w=1200&q=80',
-    ]),
-    fb_post_id: null,
-    fb_permalink: null,
-    author_name: 'Drużynowy',
-    is_pinned: 1,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  };
-}
-
 async function getD1Binding(): Promise<any> {
   // Astro v6+ / Cloudflare Workers: import { env } from "cloudflare:workers"
   try {
@@ -124,41 +104,19 @@ export async function getAllPosts(locals: any): Promise<Post[]> {
     console.warn('Nie udało się odświeżyć postów z FB w locie:', err);
   }
 
-  // 2. Pobieramy 1 post lokalny (Czuwaj! Witamy...) oraz 4 najnowsze z Facebooka z bazy D1
+  // 2. Pobieramy posty lokalne oraz z Facebooka z bazy D1
   try {
-    const welcome = getWelcomePost();
-    await executeD1Query(
-      locals,
-      `INSERT INTO posts (id, source, title, content, images_json, author_name, is_pinned, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
-       ON CONFLICT(id) DO UPDATE SET
-         title = excluded.title,
-         content = excluded.content,
-         images_json = excluded.images_json,
-         created_at = datetime('now'),
-         updated_at = datetime('now')`,
-      [
-        welcome.id,
-        welcome.source,
-        welcome.title,
-        welcome.content,
-        welcome.images_json,
-        welcome.author_name,
-        welcome.is_pinned,
-      ]
-    );
-
     const localPosts = await executeD1Query<Post>(
       locals,
-      `SELECT * FROM posts WHERE source = 'local' ORDER BY is_pinned DESC, created_at DESC LIMIT 5`
+      `SELECT * FROM posts WHERE source = 'local' ORDER BY is_pinned DESC, created_at DESC LIMIT 10`
     );
 
     const fbPosts = await executeD1Query<Post>(
       locals,
-      `SELECT * FROM posts WHERE source = 'facebook' ORDER BY created_at DESC LIMIT 5`
+      `SELECT * FROM posts WHERE source = 'facebook' ORDER BY created_at DESC LIMIT 10`
     );
 
-    const combined: Post[] = [...(localPosts.length > 0 ? localPosts : [welcome]), ...fbPosts];
+    const combined: Post[] = [...localPosts, ...fbPosts];
 
     // Sortowanie chronologiczne: najnowsze na górze
     combined.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
@@ -168,7 +126,7 @@ export async function getAllPosts(locals: any): Promise<Post[]> {
     console.error('Błąd pobierania postów z bazy D1:', err);
   }
 
-  return [getWelcomePost()];
+  return [];
 }
 
 // Pobieranie pojedynczego posta po ID
@@ -178,11 +136,6 @@ export async function getPostById(locals: any, id: string): Promise<Post | null>
     if (rows && rows.length > 0) return rows[0];
   } catch (err) {
     console.error('Błąd pobierania posta po ID:', err);
-  }
-
-  // Fallback dla posta powitalnego
-  if (id === 'local-welcome') {
-    return getWelcomePost();
   }
 
   return null;
