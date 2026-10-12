@@ -1,9 +1,24 @@
 import type { APIRoute } from 'astro';
-import { syncFacebookPosts } from '../../lib/facebook';
+import { syncFacebookPosts, parseFacebookHtml, type Post } from '../../lib/facebook';
 
-const handler: APIRoute = async ({ locals }) => {
+const handler: APIRoute = async ({ request, locals }) => {
   try {
-    const result = await syncFacebookPosts(locals);
+    let providedPosts: Post[] | undefined;
+
+    if (request.method === 'POST') {
+      try {
+        const body = await request.json() as any;
+        if (body?.html && typeof body.html === 'string') {
+          providedPosts = parseFacebookHtml(body.html);
+        } else if (Array.isArray(body?.posts) && body.posts.length > 0) {
+          providedPosts = body.posts;
+        }
+      } catch {
+        // brak treści JSON - kontynuujemy ze standardową próbą live fetch
+      }
+    }
+
+    const result = await syncFacebookPosts(locals, providedPosts);
     return new Response(JSON.stringify(result), {
       status: result.success ? 200 : 400,
       headers: { 'Content-Type': 'application/json' },

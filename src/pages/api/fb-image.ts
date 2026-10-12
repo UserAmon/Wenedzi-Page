@@ -1,8 +1,9 @@
 import type { APIRoute } from 'astro';
 
 export const GET: APIRoute = async ({ url }) => {
-  const id = url.searchParams.get('id');
-  if (!id || !/^[0-9]+$/.test(id) || id === '100067095955939' || id === '241908756183484') {
+  const id = url.searchParams.get('id') || url.searchParams.get('media_id');
+  const BAD_IDS = new Set(['100067095955939', '241908756183484', '100070016604132']);
+  if (!id || !/^[0-9]+$/.test(id) || BAD_IDS.has(id)) {
     return new Response('Not found or invalid media ID', { status: 404 });
   }
 
