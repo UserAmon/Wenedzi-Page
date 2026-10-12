@@ -1,7 +1,5 @@
 // Interfejsy i operacje bazy danych dla 3 SDH Wenedzi
 
-import { fetchLiveFacebookPosts } from './facebook';
-
 export interface Post {
   id: string;
   source: 'facebook' | 'local';
@@ -81,30 +79,9 @@ export async function executeD1Query<T = any>(
 }
 
 /**
- * Zwraca 1 post powitalny oraz 4 ostatnie z Facebooka posortowane chronologicznie.
- * Przy wejściu na stronę automatycznie zaciąga najnowsze dane ze strony na FB.
+ * Pobiera posty lokalne oraz zsynchronizowane posty z Facebooka z bazy D1 posortowane chronologicznie.
  */
 export async function getAllPosts(locals: any): Promise<Post[]> {
-  // 1. Przy wejściu na stronę zaciągamy dane na żywo z profilu na Facebooku
-  try {
-    const liveFbPosts = await fetchLiveFacebookPosts();
-    if (liveFbPosts && liveFbPosts.length > 0) {
-      for (const fbPost of liveFbPosts) {
-        const images = fbPost.images_json ? JSON.parse(fbPost.images_json) : [];
-        await upsertFacebookPost(locals, {
-          fbPostId: fbPost.fb_post_id || fbPost.id,
-          message: fbPost.content,
-          images: images,
-          permalink: fbPost.fb_permalink || 'https://www.facebook.com/wenedzi/',
-          createdAt: fbPost.created_at,
-        });
-      }
-    }
-  } catch (err) {
-    console.warn('Nie udało się odświeżyć postów z FB w locie:', err);
-  }
-
-  // 2. Pobieramy posty lokalne oraz z Facebooka z bazy D1
   try {
     const localPosts = await executeD1Query<Post>(
       locals,
@@ -113,7 +90,7 @@ export async function getAllPosts(locals: any): Promise<Post[]> {
 
     const fbPosts = await executeD1Query<Post>(
       locals,
-      `SELECT * FROM posts WHERE source = 'facebook' ORDER BY created_at DESC LIMIT 10`
+      `SELECT * FROM posts WHERE source = 'facebook' ORDER BY created_at DESC LIMIT 5`
     );
 
     const combined: Post[] = [...localPosts, ...fbPosts];

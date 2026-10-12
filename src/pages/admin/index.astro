@@ -38,9 +38,7 @@ try {
     <!-- EKRAN LOGOWANIA (jeśli nie zalogowany) -->
     <div id="login-section" class="max-w-md mx-auto bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-lg space-y-6">
       <div class="text-center space-y-2">
-        <div class="w-12 h-12 rounded-2xl bg-emerald-950 text-white flex items-center justify-center font-extrabold text-xl mx-auto shadow-inner">
-          3
-        </div>
+        <img src="/logo.png" alt="Logo 3 SDH Wenedzi" class="w-16 h-16 mx-auto object-contain drop-shadow" />
         <h2 class="text-xl font-bold text-slate-900">Dostęp dla kadry drużyny</h2>
         <p class="text-xs text-slate-500">
           Wpisz hasło administratora, aby zarządzać postami i synchronizacją z Facebookiem.
@@ -55,7 +53,7 @@ try {
           <input
             type="password"
             id="admin-password"
-            placeholder="Domyślne hasło: wenedzi3"
+            placeholder="Wprowadź hasło"
             required
             class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-700"
           />
@@ -63,13 +61,10 @@ try {
         <p id="login-error" class="hidden text-xs text-red-600 font-semibold"></p>
         <button
           type="submit"
-          class="w-full py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-sm transition-colors shadow-md"
+          class="w-full py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-sm transition-colors shadow-md cursor-pointer"
         >
           Zaloguj się
         </button>
-        <p class="text-[11px] text-slate-400 text-center">
-          Domyślne hasło startowe: <code class="font-mono bg-slate-100 px-1 py-0.5 rounded text-slate-700">wenedzi3</code>
-        </p>
       </form>
     </div>
 
@@ -488,7 +483,7 @@ try {
   </div>
 
   <script>
-    const ADMIN_PASS = 'wenedzi3';
+    const ADMIN_PASS = 'wenedzi367';
     const authStorageKey = 'wenedzi_admin_auth';
 
     const loginSection = document.getElementById('login-section');

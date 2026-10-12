@@ -2,8 +2,8 @@ import type { APIRoute } from 'astro';
 
 export const GET: APIRoute = async ({ url }) => {
   const id = url.searchParams.get('id');
-  if (!id || !/^[0-9]+$/.test(id)) {
-    return new Response('Invalid media ID', { status: 400 });
+  if (!id || !/^[0-9]+$/.test(id) || id === '100067095955939' || id === '241908756183484') {
+    return new Response('Not found or invalid media ID', { status: 404 });
   }
 
   const fbUrl = `https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=${id}`;

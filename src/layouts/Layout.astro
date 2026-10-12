@@ -19,6 +19,7 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <title>{title}</title>
+    <link rel="icon" type="image/png" href="/logo.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -44,22 +45,19 @@ const {
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-20">
           
-          <!-- Nazwa drużyny i barwy -->
-          <a href="/" class="flex items-center gap-3.5 group">
-            <div class="w-11 h-11 rounded-lg bg-emerald-900 border border-emerald-700/60 flex items-center justify-center p-1 shadow-inner relative overflow-hidden group-hover:border-emerald-500 transition-all">
-              <div class="absolute inset-0 flex flex-col opacity-90">
-                <div class="flex-1 bg-emerald-800"></div>
-                <div class="flex-1 bg-slate-950"></div>
-                <div class="flex-1 bg-white"></div>
-              </div>
-              <span class="relative z-10 text-white font-extrabold text-sm drop-shadow-md">3</span>
-            </div>
+          <!-- Nazwa drużyny i logo -->
+          <a href="/" class="flex items-center gap-3 group">
+            <img
+              src="/logo.png"
+              alt="Logo 3 SDH Wenedzi"
+              class="w-12 h-12 object-contain drop-shadow-md group-hover:scale-105 transition-transform shrink-0"
+            />
             <div class="flex flex-col">
-              <span class="font-extrabold text-lg sm:text-xl tracking-wide group-hover:text-emerald-400 transition-colors">
+              <span class="font-extrabold text-base sm:text-lg tracking-wide group-hover:text-emerald-400 transition-colors leading-tight">
                 3 SDH <span class="text-emerald-400">"Wenedzi"</span>
               </span>
-              <span class="text-xs text-slate-400 font-medium tracking-wider uppercase">
-                Szczecińska Drużyna Harcerzy
+              <span class="text-[11px] text-slate-300 font-semibold tracking-wider uppercase leading-tight">
+                im. Maksymiliana Golisza
               </span>
             </div>
           </a>
@@ -73,102 +71,112 @@ const {
               Strona Główna
             </a>
 
-            <!-- Dropdown: Dla Rodziców -->
-            <div class="relative group">
+            <!-- Dropdown: Dla Rodziców (zabezpieczony mostek hover bez przerw) -->
+            <div class="relative group py-2">
               <button
                 type="button"
-                class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold hover:bg-slate-800 hover:text-emerald-400 transition-colors"
+                class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-slate-800 hover:text-emerald-400 transition-colors cursor-pointer"
               >
                 <span>Dla Rodziców</span>
                 <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              <div class="absolute left-0 mt-1 w-56 rounded-xl bg-slate-900 border border-slate-800 p-2 shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
-                <a
-                  href="/dla-rodzicow/nasza-misja"
-                  class="block px-3 py-2.5 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
-                >
-                  🌲 Nasza misja
-                </a>
-                <a
-                  href="/dla-rodzicow/rachunek"
-                  class="block px-3 py-2.5 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
-                >
-                  💳 Rachunek i składki
-                </a>
-                <a
-                  href="/dla-rodzicow/zamowienia"
-                  class="block px-3 py-2.5 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
-                >
-                  👔 Zamówienia i mundury
-                </a>
-                <a
-                  href="/dla-rodzicow/zgoda"
-                  class="block px-3 py-2.5 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
-                >
-                  📄 Zgoda na przynależność
-                </a>
-                <a
-                  href="/dla-rodzicow/kontakt"
-                  class="block px-3 py-2.5 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
-                >
-                  📞 Kontakt do nas
-                </a>
+              <div class="absolute left-0 top-full pt-1 w-56 opacity-0 translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 z-50">
+                <div class="rounded-xl bg-slate-900 border border-slate-800 p-2 shadow-2xl">
+                  <a
+                    href="/dla-rodzicow/nasza-misja"
+                    class="block px-3 py-2.5 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
+                  >
+                    🌲 Nasza misja
+                  </a>
+                  <a
+                    href="/dla-rodzicow/rachunek"
+                    class="block px-3 py-2.5 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
+                  >
+                    💳 Rachunek i składki
+                  </a>
+                  <a
+                    href="/dla-rodzicow/zamowienia"
+                    class="block px-3 py-2.5 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
+                  >
+                    👔 Zamówienia i mundury
+                  </a>
+                  <a
+                    href="/dla-rodzicow/zgoda"
+                    class="block px-3 py-2.5 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
+                  >
+                    📄 Zgoda na przynależność
+                  </a>
+                  <a
+                    href="/dla-rodzicow/kontakt"
+                    class="block px-3 py-2.5 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
+                  >
+                    📞 Kontakt do nas
+                  </a>
+                </div>
               </div>
             </div>
 
-            <!-- Dropdown: Dla Harcerzy -->
-            <div class="relative group">
+            <!-- Dropdown: Dla Harcerzy (zabezpieczony mostek hover bez przerw) -->
+            <div class="relative group py-2">
               <button
                 type="button"
-                class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold hover:bg-slate-800 hover:text-emerald-400 transition-colors"
+                class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-slate-800 hover:text-emerald-400 transition-colors cursor-pointer"
               >
                 <span>Dla Harcerzy</span>
                 <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              <div class="absolute left-0 mt-1 w-64 rounded-xl bg-slate-900 border border-slate-800 p-2 shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
-                <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 px-3 py-1">Teoria i Duch</div>
-                <a
-                  href="/dla-harcerzy/prawo-harcerza"
-                  class="block px-3 py-2 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
-                >
-                  ⚜️ Prawo Harcerza
-                </a>
-                <a
-                  href="/dla-harcerzy/prawo-zucha"
-                  class="block px-3 py-2 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
-                >
-                  🐺 Prawo Zucha
-                </a>
-                <a
-                  href="/dla-harcerzy/spiewnik"
-                  class="block px-3 py-2 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
-                >
-                  🎸 Śpiewnik z akordami
-                </a>
+              <div class="absolute left-0 top-full pt-1 w-64 opacity-0 translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 z-50">
+                <div class="rounded-xl bg-slate-900 border border-slate-800 p-2 shadow-2xl">
+                  <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 px-3 py-1">Teoria i Duch</div>
+                  <a
+                    href="/dla-harcerzy/patron"
+                    class="block px-3 py-2 rounded-lg text-sm text-emerald-300 hover:bg-emerald-950 hover:text-emerald-200 transition-colors font-semibold"
+                  >
+                    🎖️ Patron: Maksymilian Golisz
+                  </a>
+                  <a
+                    href="/dla-harcerzy/prawo-harcerza"
+                    class="block px-3 py-2 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
+                  >
+                    ⚜️ Prawo Harcerza
+                  </a>
+                  <a
+                    href="/dla-harcerzy/prawo-zucha"
+                    class="block px-3 py-2 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
+                  >
+                    🐺 Prawo Zucha
+                  </a>
+                  <a
+                    href="/dla-harcerzy/spiewnik"
+                    class="block px-3 py-2 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
+                  >
+                    🎸 Śpiewnik z akordami
+                  </a>
 
-                <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 px-3 pt-3 pb-1 border-t border-slate-800 mt-1">Ekwipunek</div>
-                <a
-                  href="/dla-harcerzy/ekwipunek-zbiorki"
-                  class="block px-3 py-2 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
-                >
-                  🎒 Ekwipunek na zbiórki
-                </a>
-                <a
-                  href="/dla-harcerzy/ekwipunek-biwaki"
-                  class="block px-3 py-2 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
-                >
-                  ⛺ Ekwipunek na biwaki
-                </a>
-                <a
-                  href="/dla-harcerzy/ekwipunek-obozy"
-                  class="block px-3 py-2 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
-                >
-                  🌲 Ekwipunek na obozy
-                </a>
+                  <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 px-3 pt-3 pb-1 border-t border-slate-800 mt-1">Ekwipunek</div>
+                  <a
+                    href="/dla-harcerzy/ekwipunek-zbiorki"
+                    class="block px-3 py-2 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
+                  >
+                    🎒 Ekwipunek na zbiórki
+                  </a>
+                  <a
+                    href="/dla-harcerzy/ekwipunek-biwaki"
+                    class="block px-3 py-2 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
+                  >
+                    ⛺ Ekwipunek na biwaki
+                  </a>
+                  <a
+                    href="/dla-harcerzy/ekwipunek-obozy"
+                    class="block px-3 py-2 rounded-lg text-sm text-slate-200 hover:bg-emerald-950 hover:text-emerald-300 transition-colors font-medium"
+                  >
+                    🌲 Ekwipunek na obozy
+                  </a>
+                </div>
               </div>
             </div>
 
@@ -245,6 +253,9 @@ const {
 
         <div class="space-y-1 pt-2 border-t border-slate-900">
           <div class="px-3 text-xs font-bold uppercase tracking-wider text-emerald-400">Dla Harcerzy</div>
+          <a href="/dla-harcerzy/patron" class="block pl-5 pr-3 py-1.5 rounded-lg text-sm text-emerald-300 font-semibold hover:bg-slate-900">
+            🎖️ Patron: Maksymilian Golisz
+          </a>
           <a href="/dla-harcerzy/prawo-harcerza" class="block pl-5 pr-3 py-1.5 rounded-lg text-sm text-slate-300 hover:bg-slate-900">
             ⚜️ Prawo Harcerza
           </a>
@@ -295,16 +306,23 @@ const {
           
           <!-- O drużynie -->
           <div class="md:col-span-2 space-y-4">
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-lg bg-emerald-900 border border-emerald-700 flex items-center justify-center font-extrabold text-white text-sm">
-                3
+            <div class="flex items-center gap-3.5">
+              <img
+                src="/logo.png"
+                alt="Logo 3 SDH Wenedzi"
+                class="w-12 h-12 object-contain drop-shadow shrink-0"
+              />
+              <div class="flex flex-col">
+                <span class="text-white font-extrabold text-base sm:text-lg leading-tight">
+                  3 SDH "Wenedzi" Szczecin
+                </span>
+                <span class="text-xs text-emerald-400 font-semibold leading-tight">
+                  im. Maksymiliana Golisza
+                </span>
               </div>
-              <span class="text-white font-extrabold text-lg">
-                3 SDH "Wenedzi" Szczecin
-              </span>
             </div>
             <p class="text-sm text-slate-400 max-w-md leading-relaxed">
-              3 Szczecińska Drużyna Harcerzy "Wenedzi". Wychowujemy młodzież w duchu braterstwa, samodzielności i miłości do ojczyzny i przyrody.
+              3 Szczecińska Drużyna Harcerzy "Wenedzi" im. Maksymiliana Golisza. Wychowujemy młodzież w duchu braterstwa, puszczaństwa, samodzielności i miłości do Ojczyzny.
             </p>
             <div class="flex items-center gap-2 pt-1 text-xs">
               <span class="text-slate-400 font-semibold">Barwy drużyny:</span>
@@ -339,6 +357,7 @@ const {
           <div>
             <h4 class="text-white font-bold text-sm tracking-wide uppercase mb-3">Dla Harcerzy</h4>
             <ul class="space-y-2 text-sm">
+              <li><a href="/dla-harcerzy/patron" class="hover:text-emerald-400 transition-colors font-semibold text-emerald-300">🎖️ Patron Drużyny</a></li>
               <li><a href="/dla-harcerzy/prawo-harcerza" class="hover:text-emerald-400 transition-colors">Prawo Harcerza</a></li>
               <li><a href="/dla-harcerzy/prawo-zucha" class="hover:text-emerald-400 transition-colors">Prawo Zucha</a></li>
               <li><a href="/dla-harcerzy/spiewnik" class="hover:text-emerald-400 transition-colors">Śpiewnik harcerski</a></li>
