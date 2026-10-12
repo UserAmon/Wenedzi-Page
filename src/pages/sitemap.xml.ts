@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 
 export const GET: APIRoute = async ({ site }) => {
-  const baseUrl = site?.origin || 'https://wenedzi-page.leszczluki.workers.dev';
+  const baseUrl = site?.origin || 'https://wenedzi.com';
   const today = new Date().toISOString().slice(0, 10);
 
   const pages = [

@@ -15,7 +15,7 @@ const {
   noindex = false,
 } = Astro.props;
 
-const siteUrl = Astro.site?.origin || 'https://wenedzi-page.leszczluki.workers.dev';
+const siteUrl = Astro.site?.origin || 'https://wenedzi.com';
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
 const ogImageUrl = new URL(image, siteUrl).href;
 

@@ -4,4 +4,4 @@ Disallow: /admin
 Disallow: /api/
 
 # Mapa witryny dla robotów wyszukiwarek (Google, Bing, itp.)
-Sitemap: https://wenedzi-page.leszczluki.workers.dev/sitemap.xml
+Sitemap: https://wenedzi.com/sitemap.xml
