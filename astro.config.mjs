@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://wenedzi-page.leszczluki.workers.dev',
   output: 'server',
   security: {
     checkOrigin: false,
