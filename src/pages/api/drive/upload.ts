@@ -1,8 +1,17 @@
 import type { APIRoute } from 'astro';
 import { uploadImageToDrive, normalizeDateString } from '../../../lib/drive';
+import { verifyAdminAuth } from '../../../lib/auth';
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
   try {
+    const isAuthorized = await verifyAdminAuth(request, locals);
+    if (!isAuthorized) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Brak autoryzacji. Wymagane zalogowanie administratora.' }),
+        { status: 401, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     const formData = await request.formData();
     const dateInput = (formData.get('date') as string) || new Date().toISOString().slice(0, 10);
     const targetDate = normalizeDateString(dateInput);

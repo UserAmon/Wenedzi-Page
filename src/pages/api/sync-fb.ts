@@ -1,8 +1,17 @@
 import type { APIRoute } from 'astro';
 import { syncFacebookPosts, parseFacebookHtml, type Post } from '../../lib/facebook';
+import { verifyAdminAuth } from '../../lib/auth';
 
 const handler: APIRoute = async ({ request, locals }) => {
   try {
+    const isAuthorized = await verifyAdminAuth(request, locals);
+    if (!isAuthorized) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Brak autoryzacji. Wymagane zalogowanie administratora.' }),
+        { status: 401, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     let providedPosts: Post[] | undefined;
 
     if (request.method === 'POST') {

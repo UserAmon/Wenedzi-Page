@@ -1,12 +1,17 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getAllPosts, type Post } from '../../lib/db';
+import { verifyAdminAuth } from '../../lib/auth';
+
+const isAuthenticated = await verifyAdminAuth(Astro.request, Astro.locals);
 
 let posts: Post[] = [];
-try {
-  posts = await getAllPosts(Astro.locals);
-} catch (e) {
-  // DB query may fail if table not initialized yet
+if (isAuthenticated) {
+  try {
+    posts = await getAllPosts(Astro.locals);
+  } catch (e) {
+    // DB query may fail if table not initialized yet
+  }
 }
 ---
 
@@ -23,53 +28,54 @@ try {
           🔒 Panel Administratora 3 SDH "Wenedzi"
         </h1>
       </div>
-      <button
-        id="logout-btn"
-        type="button"
-        class="hidden px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-colors"
-      >
-        Wyloguj się
-      </button>
+      {isAuthenticated && (
+        <button
+          id="logout-btn"
+          type="button"
+          class="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-colors cursor-pointer"
+        >
+          Wyloguj się
+        </button>
+      )}
     </div>
   </div>
 
   <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
-    
-    <!-- EKRAN LOGOWANIA (jeśli nie zalogowany) -->
-    <div id="login-section" class="max-w-md mx-auto bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-lg space-y-6">
-      <div class="text-center space-y-2">
-        <img src="/logo.png" alt="Logo 3 SDH Wenedzi" class="w-16 h-16 mx-auto object-contain drop-shadow" />
-        <h2 class="text-xl font-bold text-slate-900">Dostęp dla kadry drużyny</h2>
-        <p class="text-xs text-slate-500">
-          Wpisz hasło administratora, aby zarządzać postami i synchronizacją z Facebookiem.
-        </p>
-      </div>
-
-      <form id="login-form" class="space-y-4">
-        <div>
-          <label for="admin-password" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
-            Hasło dostępu:
-          </label>
-          <input
-            type="password"
-            id="admin-password"
-            placeholder="Wprowadź hasło"
-            required
-            class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-700"
-          />
+    {!isAuthenticated ? (
+      <div id="login-section" class="max-w-md mx-auto bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-lg space-y-6">
+        <div class="text-center space-y-2">
+          <img src="/logo.png" alt="Logo 3 SDH Wenedzi" class="w-16 h-16 mx-auto object-contain drop-shadow" />
+          <h2 class="text-xl font-bold text-slate-900">Dostęp dla kadry drużyny</h2>
+          <p class="text-xs text-slate-500">
+            Wpisz hasło administratora, aby zarządzać postami i synchronizacją z Facebookiem.
+          </p>
         </div>
-        <p id="login-error" class="hidden text-xs text-red-600 font-semibold"></p>
-        <button
-          type="submit"
-          class="w-full py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-sm transition-colors shadow-md cursor-pointer"
-        >
-          Zaloguj się
-        </button>
-      </form>
-    </div>
 
-    <!-- WŁAŚCIWY DASHBOARD ADMINISTRATORA (ukryty do zalogowania) -->
-    <div id="dashboard-section" class="hidden space-y-10">
+        <form id="login-form" class="space-y-4">
+          <div>
+            <label for="admin-password" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+              Hasło dostępu:
+            </label>
+            <input
+              type="password"
+              id="admin-password"
+              placeholder="Wprowadź hasło"
+              required
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-700"
+            />
+          </div>
+          <p id="login-error" class="hidden text-xs text-red-600 font-semibold"></p>
+          <button
+            type="submit"
+            id="login-submit-btn"
+            class="w-full py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-sm transition-colors shadow-md cursor-pointer"
+          >
+            Zaloguj się
+          </button>
+        </form>
+      </div>
+    ) : (
+      <div id="dashboard-section" class="space-y-10">
       
       <!-- POWIADOMIENIA / TOAST -->
       <div id="admin-alert" class="hidden p-4 rounded-xl text-sm font-semibold transition-all"></div>
@@ -407,10 +413,12 @@ try {
       </div>
 
     </div>
+    )}
 
   </div>
 
   <!-- MODAL EDYCJI POSTA LOKALNEGO -->
+  {isAuthenticated && (
   <div
     id="edit-modal"
     class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs hidden items-center justify-center p-4"
@@ -509,50 +517,65 @@ try {
       </form>
     </div>
   </div>
+  )}
 
   <script>
-    const ADMIN_PASS = 'wenedzi367';
-    const authStorageKey = 'wenedzi_admin_auth';
-
-    const loginSection = document.getElementById('login-section');
-    const dashboardSection = document.getElementById('dashboard-section');
-    const loginForm = document.getElementById('login-form');
+    // Obsługa logowania administratora
+    const loginForm = document.getElementById('login-form') as HTMLFormElement;
     const loginError = document.getElementById('login-error');
-    const logoutBtn = document.getElementById('logout-btn');
-
-    function checkAuth() {
-      const isAuth = sessionStorage.getItem(authStorageKey) === 'true';
-      if (isAuth) {
-        loginSection?.classList.add('hidden');
-        dashboardSection?.classList.remove('hidden');
-        logoutBtn?.classList.remove('hidden');
-      } else {
-        loginSection?.classList.remove('hidden');
-        dashboardSection?.classList.add('hidden');
-        logoutBtn?.classList.add('hidden');
-      }
-    }
+    const loginSubmitBtn = document.getElementById('login-submit-btn') as HTMLButtonElement;
 
     if (loginForm) {
-      loginForm.addEventListener('submit', (e) => {
+      loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const input = (document.getElementById('admin-password') as HTMLInputElement)?.value;
-        if (input === ADMIN_PASS) {
-          sessionStorage.setItem(authStorageKey, 'true');
-          checkAuth();
-        } else {
+        if (!input) return;
+
+        if (loginSubmitBtn) {
+          loginSubmitBtn.disabled = true;
+          loginSubmitBtn.textContent = 'Logowanie...';
+        }
+        if (loginError) loginError.classList.add('hidden');
+
+        try {
+          const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: input }),
+          });
+
+          const data = (await res.json()) as any;
+          if (res.ok && data.success) {
+            window.location.reload();
+          } else {
+            if (loginError) {
+              loginError.textContent = data.error || 'Nieprawidłowe hasło.';
+              loginError.classList.remove('hidden');
+            }
+          }
+        } catch (err: any) {
           if (loginError) {
-            loginError.textContent = 'Nieprawidłowe hasło.';
+            loginError.textContent = 'Błąd połączenia: ' + err.message;
             loginError.classList.remove('hidden');
+          }
+        } finally {
+          if (loginSubmitBtn) {
+            loginSubmitBtn.disabled = false;
+            loginSubmitBtn.textContent = 'Zaloguj się';
           }
         }
       });
     }
 
+    // Obsługa wylogowania administratora
+    const logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn) {
-      logoutBtn.addEventListener('click', () => {
-        sessionStorage.removeItem(authStorageKey);
-        checkAuth();
+      logoutBtn.addEventListener('click', async () => {
+        try {
+          await fetch('/api/auth/logout', { method: 'POST' });
+        } finally {
+          window.location.reload();
+        }
       });
     }
 
@@ -614,6 +637,12 @@ try {
           method: 'POST',
           body: formData,
         });
+
+        if (res.status === 401) {
+          alert('Sesja administratora wygasła. Zaloguj się ponownie.');
+          window.location.reload();
+          return;
+        }
 
         const data = (await res.json()) as any;
         if (data.success && data.files) {
@@ -692,6 +721,12 @@ try {
           }),
         });
 
+        if (res.status === 401) {
+          alert('Sesja administratora wygasła. Zaloguj się ponownie.');
+          window.location.reload();
+          return;
+        }
+
         const data = await res.json() as any;
         if (data.success) {
           alert('Post został pomyślnie opublikowany!');
@@ -724,6 +759,12 @@ try {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
         });
+
+        if (res.status === 401) {
+          alert('Sesja administratora wygasła. Zaloguj się ponownie.');
+          window.location.reload();
+          return;
+        }
 
         const data = await res.json() as any;
         if (data.success) {
@@ -773,6 +814,12 @@ try {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ html: htmlVal }),
         });
+
+        if (res.status === 401) {
+          alert('Sesja administratora wygasła. Zaloguj się ponownie.');
+          window.location.reload();
+          return;
+        }
 
         const data = await res.json() as any;
         if (data.success) {
@@ -862,6 +909,12 @@ try {
           body: JSON.stringify({ title, authorName, content, isPinned, images }),
         });
 
+        if (res.status === 401) {
+          alert('Sesja administratora wygasła. Zaloguj się ponownie.');
+          window.location.reload();
+          return;
+        }
+
         const data = await res.json() as any;
         if (data.success) {
           alert('Post został pomyślnie zaktualizowany!');
@@ -885,6 +938,13 @@ try {
             const res = await fetch(`/api/posts/${encodeURIComponent(id)}`, {
               method: 'DELETE',
             });
+
+            if (res.status === 401) {
+              alert('Sesja administratora wygasła. Zaloguj się ponownie.');
+              window.location.reload();
+              return;
+            }
+
             const data = await res.json() as any;
             if (data.success) {
               const row = btn.closest('tr');
@@ -903,7 +963,5 @@ try {
     document.getElementById('refresh-posts-btn')?.addEventListener('click', () => {
       window.location.reload();
     });
-
-    checkAuth();
   </script>
 </Layout>

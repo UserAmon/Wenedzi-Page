@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getPostById, updateLocalPost, deletePostById } from '../../../lib/db';
+import { verifyAdminAuth } from '../../../lib/auth';
 
 export const GET: APIRoute = async ({ params, locals }) => {
   try {
@@ -33,6 +34,14 @@ export const GET: APIRoute = async ({ params, locals }) => {
 
 export const PUT: APIRoute = async ({ params, request, locals }) => {
   try {
+    const isAuthorized = await verifyAdminAuth(request, locals);
+    if (!isAuthorized) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Brak autoryzacji. Wymagane zalogowanie administratora.' }),
+        { status: 401, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     const { id } = params;
     if (!id) {
       return new Response(JSON.stringify({ success: false, error: 'Brak ID posta' }), {
@@ -71,8 +80,16 @@ export const PUT: APIRoute = async ({ params, request, locals }) => {
   }
 };
 
-export const DELETE: APIRoute = async ({ params, locals }) => {
+export const DELETE: APIRoute = async ({ params, request, locals }) => {
   try {
+    const isAuthorized = await verifyAdminAuth(request, locals);
+    if (!isAuthorized) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Brak autoryzacji. Wymagane zalogowanie administratora.' }),
+        { status: 401, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     const { id } = params;
     if (!id) {
       return new Response(JSON.stringify({ success: false, error: 'Brak ID posta' }), {
